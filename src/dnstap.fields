@@ -1,0 +1,16 @@
+dnstap dnstap identity string
+dnstap dnstap version string
+dnstap dnstap extra bytes
+dnstap_message message socket_family enum dnstap_socket_family
+dnstap_message message socket_protocol enum dnstap_socket_protocol
+dnstap_message message query_address bytes
+dnstap_message message response_address bytes
+dnstap_message message query_port value uint32_t
+dnstap_message message response_port value uint32_t
+dnstap_message message query_time_sec value uint64_t
+dnstap_message message query_time_nsec value uint32_t
+dnstap_message message query_message bytes
+dnstap_message message query_zone bytes
+dnstap_message message response_time_sec value uint64_t
+dnstap_message message response_time_nsec value uint32_t
+dnstap_message message response_message bytes
