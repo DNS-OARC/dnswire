@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libdnstap
+Description: dnstap library
+Version: @VERSION@
+URL: https://github.com/DNS-OARC/dnstap
+Requires: libtinyframe >= 0.1.0
+Libs: -L${libdir} -ldnstap
+Libs.private:
+Cflags: -I${includedir}
