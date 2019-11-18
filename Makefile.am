@@ -4,7 +4,7 @@ MAINTAINERCLEANFILES = $(srcdir)/Makefile.in \
   $(srcdir)/src/config.h.in~ \
   $(srcdir)/configure
 
-SUBDIRS = src
+SUBDIRS = src examples
 
 pkgconfig_DATA = libdnstap.pc
 

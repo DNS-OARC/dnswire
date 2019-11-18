@@ -33,6 +33,16 @@ AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=CFLAGS], [Add
   AS_VAR_APPEND(LDFLAGS, [" $withval"])
 ])
 
+# Check --disable-examples
+AC_ARG_ENABLE([examples], [AS_HELP_STRING([--disable-examples], [do not build examples])], [
+AC_MSG_NOTICE([examples ${enableval}])
+case "${enableval}" in
+  yes) build_examples=true ;;
+  no)  build_examples=false ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-examples]) ;;
+esac], [build_examples=true])
+AM_CONDITIONAL([BUILD_EXAMPLES], [test x$build_examples = xtrue])
+
 # pkg-config
 PKG_INSTALLDIR
 
@@ -46,9 +56,10 @@ PKG_CHECK_MODULES([protobuf_c], [libprotobuf-c >= 1.0.1])
 
 # Output Makefiles
 AC_CONFIG_FILES([
-    Makefile
-	libdnstap.pc
-    src/Makefile
-    src/test/Makefile
+  Makefile
+  libdnstap.pc
+  src/Makefile
+  src/test/Makefile
+  examples/Makefile
 ])
 AC_OUTPUT

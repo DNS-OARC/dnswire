@@ -5,4 +5,5 @@ clang-format-4.0 \
     -i \
     src/dnstap.c \
     src/dnstap/dnstap.h \
-    src/test/*.c
+    src/test/*.c \
+    examples/*.c
