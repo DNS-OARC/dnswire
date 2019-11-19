@@ -1,5 +1,5 @@
 AC_PREREQ(2.61)
-AC_INIT([dnstap], [0.1.0], [todo@dns-oarc.net], [dnstap], [https://github.com/DNS-OARC/dnstap/issues])
+AC_INIT([dnswire], [0.1.0], [admin@dns-oarc.net], [dnswire], [https://github.com/DNS-OARC/dnswire/issues])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/dnstap.c])
 AC_CONFIG_HEADER([src/config.h])
@@ -57,7 +57,7 @@ PKG_CHECK_MODULES([protobuf_c], [libprotobuf-c >= 1.0.1])
 # Output Makefiles
 AC_CONFIG_FILES([
   Makefile
-  libdnstap.pc
+  libdnswire.pc
   src/Makefile
   src/test/Makefile
   examples/Makefile

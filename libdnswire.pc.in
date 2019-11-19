@@ -3,11 +3,11 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: libdnstap
-Description: dnstap library
+Name: libdnswire
+Description: dnswire library
 Version: @VERSION@
-URL: https://github.com/DNS-OARC/dnstap
+URL: https://github.com/DNS-OARC/dnswire
 Requires: libtinyframe >= 0.1.0
-Libs: -L${libdir} -ldnstap
+Libs: -L${libdir} -ldnswire
 Libs.private:
 Cflags: -I${includedir}

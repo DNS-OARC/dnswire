@@ -1,6 +1,9 @@
-# DNSTAP library
+# library for DNS encapsulations
 
-A C library that can read and write [DNSTAP](http://dnstap.info) and uses
-[tinyframe](https://github.com/DNS-OARC/tinyframe) to encapsulate it.
+**Currently Work in Progress!**
 
-Currently Work in Progress!
+A C library that can read and write different types of DNS and DNS transport
+encapsulations.
+
+Currently supports:
+- [DNSTAP](http://dnstap.info) over Frame Streams using [tinyframe](https://github.com/DNS-OARC/tinyframe)
