@@ -5,15 +5,9 @@
 #include <errno.h>
 #include <string.h>
 #include <inttypes.h>
-
-#include <stdlib.h>
 #include <arpa/inet.h>
-#include <assert.h>
+#include <stdlib.h>
 #include <ctype.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <time.h>
-#include <unistd.h>
 
 static const char* printable_string(const uint8_t* data, size_t len)
 {

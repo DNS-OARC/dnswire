@@ -26,8 +26,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-#ifndef __dnstap_h_dnstap
-#define __dnstap_h_dnstap 1
+#ifndef __dnswire_h_dnstap
+#define __dnswire_h_dnstap 1
 
 enum dnstap_type {
     DNSTAP_TYPE_UNKNOWN = 0,
