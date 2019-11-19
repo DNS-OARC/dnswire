@@ -1,4 +1,4 @@
-#include <dnstap/dnstap.h>
+#include <dnswire/dnstap.h>
 #include <tinyframe/tinyframe.h>
 
 #include <stdio.h>

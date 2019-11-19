@@ -6,7 +6,7 @@ MAINTAINERCLEANFILES = $(srcdir)/Makefile.in \
 
 SUBDIRS = src examples
 
-pkgconfig_DATA = libdnstap.pc
+pkgconfig_DATA = libdnswire.pc
 
 dist_doc_DATA = README.md
 

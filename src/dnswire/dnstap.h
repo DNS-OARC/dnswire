@@ -3,23 +3,23 @@
  * Copyright (c) 2019, OARC, Inc.
  * All rights reserved.
  *
- * This file is part of the dnstap library.
+ * This file is part of the dnswire library.
  *
- * dnstap library is free software: you can redistribute it and/or modify
+ * dnswire library is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * dnstap library is distributed in the hope that it will be useful,
+ * dnswire library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with dnstap library.  If not, see <http://www.gnu.org/licenses/>.
+ * along with dnswire library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <dnstap/dnstap.pb-c.h>
+#include <dnswire/dnstap.pb-c.h>
 
 #include <stdint.h>
 #include <stdio.h>
@@ -80,7 +80,7 @@ struct dnstap {
         .unpacked_dnstap = 0,                     \
     }
 
-#include <dnstap/dnstap-macros.h>
+#include <dnswire/dnstap-macros.h>
 #define dnstap_type(d) (enum dnstap_type)((d).dnstap.type)
 #define dnstap_set_type(d, v)                     \
     switch (v) {                                  \
