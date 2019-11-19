@@ -207,6 +207,7 @@ int main(int argc, const char* argv[])
      */
 
     if (tinyframe_read(&reader, decoding, left) != tinyframe_have_control_field
+        || reader.control_field.type != TINYFRAME_CONTROL_FIELD_CONTENT_TYPE
         || strncmp("protobuf:dnstap.Dnstap", (const char*)reader.control_field.data, reader.control_field.length)) {
         fprintf(stderr, "Not a control field, or not content type dnstap\n");
         return 1;
