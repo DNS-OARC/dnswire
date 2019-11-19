@@ -126,7 +126,7 @@ int main(int argc, const char* argv[])
      * Next we initialize a tinyframe writer to write out the Frame Streams.
      */
 
-    struct tinyframe_writer h = TINYFRAME_WRITER_INITIALIZER;
+    struct tinyframe_writer writer = TINYFRAME_WRITER_INITIALIZER;
 
     /*
      * We create a buffer that holds the control frames and the data frame,
@@ -143,35 +143,35 @@ int main(int argc, const char* argv[])
      * control field for the DNSTAP protobuf content type.
      */
 
-    if (tinyframe_write_control_start(&h, &out[wrote], len, content_type, sizeof(content_type) - 1) != tinyframe_ok) {
+    if (tinyframe_write_control_start(&writer, &out[wrote], len, content_type, sizeof(content_type) - 1) != tinyframe_ok) {
         fprintf(stderr, "tinyframe_write_control_start() failed\n");
         return 1;
     }
-    wrote += h.bytes_wrote;
-    len -= h.bytes_wrote;
+    wrote += writer.bytes_wrote;
+    len -= writer.bytes_wrote;
 
     /*
-     * The we write, to the buffer, a data frame with the encoded DNSTAP
+     * Then we write, to the buffer, a data frame with the encoded DNSTAP
      * message.
      */
 
-    if (tinyframe_write_frame(&h, &out[wrote], len, frame, sizeof(frame)) != tinyframe_ok) {
+    if (tinyframe_write_frame(&writer, &out[wrote], len, frame, sizeof(frame)) != tinyframe_ok) {
         fprintf(stderr, "tinyframe_write_frame() failed\n");
         return 1;
     }
-    wrote += h.bytes_wrote;
-    len -= h.bytes_wrote;
+    wrote += writer.bytes_wrote;
+    len -= writer.bytes_wrote;
 
     /*
      * Lastly we write, to the buffer, a control stop to indicate the end.
      */
 
-    if (tinyframe_write_control_stop(&h, &out[wrote], len) != tinyframe_ok) {
+    if (tinyframe_write_control_stop(&writer, &out[wrote], len) != tinyframe_ok) {
         fprintf(stderr, "tinyframe_write_control_stop() failed\n");
         return 1;
     }
-    wrote += h.bytes_wrote;
-    len -= h.bytes_wrote;
+    wrote += writer.bytes_wrote;
+    len -= writer.bytes_wrote;
 
     /*
      * Now we write the buffer to the file we opened previously.
