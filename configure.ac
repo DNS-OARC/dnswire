@@ -1,5 +1,8 @@
 AC_PREREQ(2.61)
 AC_INIT([dnswire], [0.1.0], [admin@dns-oarc.net], [dnswire], [https://github.com/DNS-OARC/dnswire/issues])
+AC_SUBST([DNSWIRE_VERSION_MAJOR], [0000])
+AC_SUBST([DNSWIRE_VERSION_MINOR], [0001])
+AC_SUBST([DNSWIRE_VERSION_PATCH], [0000])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/dnstap.c])
 AC_CONFIG_HEADER([src/config.h])
@@ -61,5 +64,6 @@ AC_CONFIG_FILES([
   src/Makefile
   src/test/Makefile
   examples/Makefile
+  src/dnswire/dnswire.h
 ])
 AC_OUTPUT
