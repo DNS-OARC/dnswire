@@ -15,7 +15,8 @@ nodist_libdnswire_la_SOURCES = dnstap.pb-c.c
 BUILT_SOURCES += dnswire/dnstap.pb-c.h
 nobase_include_HEADERS = dnswire/dnstap.h
 nobase_nodist_include_HEADERS = dnswire/dnstap.pb-c.h dnswire/dnstap-macros.h
-libdnswire_la_LDFLAGS = -ltinyframe -lprotobuf-c
+libdnswire_la_LDFLAGS = -version-info $(DNSWIRE_LIBRARY_VERSION) \
+  -ltinyframe -lprotobuf-c
 
 CLEANFILES += $(nodist_libdnswire_la_SOURCES)
 EXTRA_DIST += dnstap.pb/dnstap.proto dnstap.pb/LICENSE dnstap.pb/README.md

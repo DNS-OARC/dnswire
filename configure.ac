@@ -3,6 +3,7 @@ AC_INIT([dnswire], [0.1.0], [admin@dns-oarc.net], [dnswire], [https://github.com
 AC_SUBST([DNSWIRE_VERSION_MAJOR], [0000])
 AC_SUBST([DNSWIRE_VERSION_MINOR], [0001])
 AC_SUBST([DNSWIRE_VERSION_PATCH], [0000])
+AC_SUBST([DNSWIRE_LIBRARY_VERSION], [0:0:0])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/dnstap.c])
 AC_CONFIG_HEADER([src/config.h])

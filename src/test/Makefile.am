@@ -9,12 +9,14 @@ AM_CFLAGS = -I$(top_srcdir)/src \
 
 check_PROGRAMS = test1 test2
 TESTS = test1.sh test2.sh
+EXTRA_DIST = $(TESTS)
 
 test1.sh: test1
 
 test1_SOURCES = test1.c
 test1_LDADD = ../libdnswire.la
 test1_LDFLAGS = $(protobuf_c_LIBS) $(tinyframe_LIBS)
+EXTRA_DIST += test.dnstap
 
 test2.sh: test2 test1
 
