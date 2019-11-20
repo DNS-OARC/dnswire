@@ -170,7 +170,7 @@ void tick(uv_timer_t* handle)
      * Now we create a DNSTAP message.
      */
 
-    struct dnstap d = create_dnstap();
+    struct dnstap d = create_dnstap("daemon_sender_uv");
 
     /*
      * Now that the message is prepared we can begin encapsulating it in

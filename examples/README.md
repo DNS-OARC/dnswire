@@ -24,7 +24,7 @@ got control start
 got content type DNSTAP
 received 133 bytes
 ---- dnstap
-identity: simple_writer
+identity: simple_sender
 version: 0.1.0
 message:
   type: MESSAGE
@@ -80,7 +80,7 @@ got control start
 got content type DNSTAP
 received 133 bytes
 ---- dnstap
-identity: simple_writer
+identity: daemon_sender_uv
 version: 0.1.0
 message:
   type: MESSAGE
@@ -99,7 +99,7 @@ message:
 ----
 received 133 bytes
 ---- dnstap
-identity: simple_writer
+identity: daemon_sender_uv
 version: 0.1.0
 message:
   type: MESSAGE

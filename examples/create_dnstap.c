@@ -6,7 +6,7 @@
 
 static char dns_wire_format_placeholder[] = "dns_wire_format_placeholder";
 
-static inline struct dnstap create_dnstap()
+static inline struct dnstap create_dnstap(const char* identity)
 {
     /*
      * Now we initialize a DNSTAP message.
@@ -19,7 +19,7 @@ static inline struct dnstap create_dnstap()
      * message.
      */
 
-    dnstap_set_identity_string(d, "simple_writer");
+    dnstap_set_identity_string(d, identity);
     dnstap_set_version_string(d, DNSWIRE_VERSION_STRING);
 
     /*
