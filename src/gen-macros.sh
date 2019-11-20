@@ -10,13 +10,13 @@ while read prefix base name type typedef; do
 #define ${prefix}_${name}(d) (const uint8_t*)((d).${base}.${name}.data)
 #define ${prefix}_${name}_length(d) (size_t)((d).${base}.${name}.len)
 #define ${prefix}_set_${name}(d, v, l) (d).${base}.has_${name} = true; (d).${base}.${name}.data = v; (d).${base}.${name}.len = l
-#define ${prefix}_set_${name}_string(d, v) (d).${base}.has_${name} = true; (d).${base}.${name}.data = v; (d).${base}.${name}.len = strlen(v)"
+#define ${prefix}_set_${name}_string(d, v) (d).${base}.has_${name} = true; (d).${base}.${name}.data = (uint8_t*)v; (d).${base}.${name}.len = strlen(v)"
             ;;
         bytes )
             echo "#define ${prefix}_has_${name}(d) (bool)((d).${base}.has_${name})
 #define ${prefix}_${name}(d) (const uint8_t*)((d).${base}.${name}.data)
 #define ${prefix}_${name}_length(d) (size_t)((d).${base}.${name}.len)
-#define ${prefix}_set_${name}(d, v, l) (d).${base}.has_${name} = true; (d).${base}.${name}.data = v; (d).${base}.${name}.len = l"
+#define ${prefix}_set_${name}(d, v, l) (d).${base}.has_${name} = true; (d).${base}.${name}.data = (uint8_t*)v; (d).${base}.${name}.len = l"
             ;;
         enum )
             echo "#define ${prefix}_has_${name}(d) (bool)((d).${base}.has_${name})

@@ -52,7 +52,9 @@ PKG_INSTALLDIR
 
 # Checks for libraries.
 PKG_CHECK_MODULES([tinyframe], [libtinyframe >= 0.1.0], , [AC_MSG_ERROR([libtinyframe not found])])
-PKG_CHECK_MODULES([protobuf_c], [libprotobuf-c >= 1.0.1])
+PKG_CHECK_MODULES([protobuf_c], [libprotobuf-c >= 1.0.1], , [AC_MSG_ERROR([libprotobuf-c not found])])
+PKG_CHECK_MODULES([uv], [libuv], [have_libuv=true])
+AM_CONDITIONAL([HAVE_LIBUV], [test x$have_libuv = xtrue])
 
 # Checks for header files.
 
