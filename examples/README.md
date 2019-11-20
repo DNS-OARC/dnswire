@@ -60,9 +60,9 @@ sent 12 bytes
 ## daemon_sender_uv and client_receiver_uv
 
 These examples works in the reverse way compared to `simple_receiver` and
-`simple_sender`, and maybe a more traditional way, the daemon listens for
-connections and once a client connect it establish the Frame Streams to
-continuously send messages to the client.
+`simple_sender`, and maybe a more traditional way, the daemon listens and
+accepts connections from new clients, and will continuously send messages to
+established clients that are ready to receive them.
 
 ```
 $ ./daemon_sender_uv 127.0.0.1 5353
