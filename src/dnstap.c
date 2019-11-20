@@ -23,11 +23,11 @@
 
 #include "dnswire/dnstap.h"
 
-const char const* DNSTAP_TYPE_STRING[] = {
+const char* const DNSTAP_TYPE_STRING[] = {
     "UNKNOWN",
     "MESSAGE",
 };
-const char const* DNSTAP_MESSAGE_TYPE_STRING[] = {
+const char* const DNSTAP_MESSAGE_TYPE_STRING[] = {
     "UNKNOWN",
     "AUTH_QUERY",
     "AUTH_RESPONSE",
@@ -42,12 +42,12 @@ const char const* DNSTAP_MESSAGE_TYPE_STRING[] = {
     "TOOL_QUERY",
     "TOOL_RESPONSE",
 };
-const char const* DNSTAP_SOCKET_FAMILY_STRING[] = {
+const char* const DNSTAP_SOCKET_FAMILY_STRING[] = {
     "UNKNOWN",
     "INET",
     "INET6",
 };
-const char const* DNSTAP_SOCKET_PROTOCOL_STRING[] = {
+const char* const DNSTAP_SOCKET_PROTOCOL_STRING[] = {
     "UNKNOWN",
     "UDP",
     "TCP",

@@ -33,7 +33,7 @@ enum dnstap_type {
     DNSTAP_TYPE_UNKNOWN = 0,
     DNSTAP_TYPE_MESSAGE = 1,
 };
-extern const char const* DNSTAP_TYPE_STRING[];
+extern const char* const DNSTAP_TYPE_STRING[];
 
 enum dnstap_message_type {
     DNSTAP_MESSAGE_TYPE_UNKNOWN            = 0,
@@ -50,21 +50,21 @@ enum dnstap_message_type {
     DNSTAP_MESSAGE_TYPE_TOOL_QUERY         = 11,
     DNSTAP_MESSAGE_TYPE_TOOL_RESPONSE      = 12,
 };
-extern const char const* DNSTAP_MESSAGE_TYPE_STRING[];
+extern const char* const DNSTAP_MESSAGE_TYPE_STRING[];
 
 enum dnstap_socket_family {
     DNSTAP_SOCKET_FAMILT_UNKNOWN = 0,
     DNSTAP_SOCKET_FAMILY_INET    = 1,
     DNSTAP_SOCKET_FAMILY_INET6   = 2,
 };
-extern const char const* DNSTAP_SOCKET_FAMILY_STRING[];
+extern const char* const DNSTAP_SOCKET_FAMILY_STRING[];
 
 enum dnstap_socket_protocol {
     DNSTAP_SOCKET_PROTOCOL_UNKNOWN = 0,
     DNSTAP_SOCKET_PROTOCOL_UDP     = 1,
     DNSTAP_SOCKET_PROTOCOL_TCP     = 2,
 };
-extern const char const* DNSTAP_SOCKET_PROTOCOL_STRING[];
+extern const char* const DNSTAP_SOCKET_PROTOCOL_STRING[];
 
 struct dnstap {
     Dnstap__Dnstap  dnstap;
