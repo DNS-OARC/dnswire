@@ -30,7 +30,7 @@ int main(int argc, const char* argv[])
      * Now we create a DNSTAP message.
      */
 
-    struct dnstap d = create_dnstap();
+    struct dnstap d = create_dnstap("simple_writer");
 
     /*
      * Now that the message is prepared we can begin encapsulating it in

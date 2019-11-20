@@ -69,7 +69,7 @@ void handle_client(int fd)
      * Now we create a DNSTAP message.
      */
 
-    struct dnstap d = create_dnstap();
+    struct dnstap d = create_dnstap("simple_sender");
 
     /*
      * Now that the message is prepared we can begin encapsulating it in
