@@ -67,6 +67,6 @@ AC_CONFIG_FILES([
   src/Makefile
   src/test/Makefile
   examples/Makefile
-  src/dnswire/dnswire.h
+  src/dnswire/version.h
 ])
 AC_OUTPUT

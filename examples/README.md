@@ -6,6 +6,8 @@
 - `simple_sender`: Example of constructing a DNSTAP message and sending it over a TCP connection
 - `daemon_sender_uv`: Example of a daemon that will continuously send DNSTAP messages to connected clients, using the event engine `libuv`
 - `client_receiver_uv`: Example of a client that will receive DNSTAP message from the daemon, using the event engine `libuv`
+- `reader`: Example of reading DNSTAP using `tinyframe` to show how Frame Streams work
+- `writer`: Example of writing DNSTAP using `tinyframe` to show how Frame Streams work
 
 ## simple_receiver and simple_sender
 

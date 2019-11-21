@@ -1,0 +1,33 @@
+read 304
+---- dnstap
+identity: test4
+version: 0.1.0
+message:
+  type: MESSAGE
+  socket_family: INET
+  socket_protocol: UDP
+  query_address: 0.16.0.0
+  query_port: 12345
+  response_address: 0.0.0.0
+  response_port: 53
+  query_message_length: 27
+  query_message: dns_wire_format_placeholder
+  response_message_length: 27
+  response_message: dns_wire_format_placeholder
+----
+---- dnstap
+identity: test4
+version: 0.1.0
+message:
+  type: MESSAGE
+  socket_family: INET
+  socket_protocol: UDP
+  query_address: 0.16.0.0
+  query_port: 12345
+  response_address: 0.0.0.0
+  response_port: 53
+  query_message_length: 27
+  query_message: dns_wire_format_placeholder
+  response_message_length: 27
+  response_message: dns_wire_format_placeholder
+----
