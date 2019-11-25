@@ -1,0 +1,21 @@
+read 179
+control type 2 len 34
+control_field type 1 len 22 data: protobuf:dnstap.Dnstap
+frame len 121
+---- dnstap
+identity: test2
+version: 0.1.0
+message:
+  type: MESSAGE
+  socket_family: INET
+  socket_protocol: UDP
+  query_address: 127.0.0.1
+  query_port: 12345
+  response_address: 127.0.0.1
+  response_port: 53
+  query_message_length: 27
+  query_message: dns_wire_format_placeholder
+  response_message_length: 27
+  response_message: dns_wire_format_placeholder
+----
+stopped

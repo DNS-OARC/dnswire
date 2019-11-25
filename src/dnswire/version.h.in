@@ -19,8 +19,10 @@
  * along with dnswire library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __dnswire_h_dnswire
-#define __dnswire_h_dnswire 1
+#include <dnswire/dnswire.h>
+
+#ifndef __dnswire_h_version
+#define __dnswire_h_version 1
 
 #define DNSWIRE_VERSION @DNSWIRE_VERSION_MAJOR@@DNSWIRE_VERSION_MINOR@@DNSWIRE_VERSION_PATCH@
 #define DNSWIRE_VERSION_MAJOR @DNSWIRE_VERSION_MAJOR@

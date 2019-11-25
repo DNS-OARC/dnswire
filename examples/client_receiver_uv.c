@@ -69,13 +69,35 @@ void client_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf)
                 printf("got content type DNSTAP\n");
                 break;
 
-            case tinyframe_have_frame:
+            case tinyframe_have_frame: {
                 /*
-                 * We got a frame, lets use `print_dnstap()` to decode the
-                 * DNSTAP content.
+                 * We got a frame, lets decode and print the DNSTAP content.
                  */
-                print_dnstap(reader.frame.data, reader.frame.length);
+
+                struct dnstap d = DNSTAP_INITIALIZER;
+
+                /*
+                 * First we decode the DNSTAP protobuf message.
+                 */
+
+                if (dnstap_decode_protobuf(&d, reader.frame.data, reader.frame.length)) {
+                    fprintf(stderr, "dnstap_decode_protobuf() failed\n");
+                    return;
+                }
+
+                /*
+                 * Now we print the DNSTAP message.
+                 */
+
+                print_dnstap(&d);
+
+                /*
+                 * And finally we cleanup protobuf allocations.
+                 */
+
+                dnstap_cleanup(&d);
                 break;
+            }
 
             case tinyframe_need_more:
                 /*

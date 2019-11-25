@@ -29,6 +29,9 @@
 #ifndef __dnswire_h_dnstap
 #define __dnswire_h_dnstap 1
 
+#define DNSTAP_PROTOBUF_CONTENT_TYPE "protobuf:dnstap.Dnstap"
+#define DNSTAP_PROTOBUF_CONTENT_TYPE_LENGTH 22
+
 enum dnstap_type {
     DNSTAP_TYPE_UNKNOWN = 0,
     DNSTAP_TYPE_MESSAGE = 1,

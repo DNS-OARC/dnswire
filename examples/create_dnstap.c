@@ -1,6 +1,8 @@
-#include <dnswire/dnswire.h>
+#include <dnswire/version.h>
 #include <dnswire/dnstap.h>
 
+#include <errno.h>
+#include <string.h>
 #include <arpa/inet.h>
 #include <time.h>
 

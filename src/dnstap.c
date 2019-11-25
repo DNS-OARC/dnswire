@@ -53,58 +53,6 @@ const char* const DNSTAP_SOCKET_PROTOCOL_STRING[] = {
     "TCP",
 };
 
-/*
-dnstap_library_init();
-
-struct dnstap_encapsulation;
-struct dnstap;
-struct dnstap_message;
-
-int read() {
-    struct dnstap_encapsulation *encap;
-    struct dnstap_message *msg;
-
-    encap = dnstap_encapsulation_protobuf_new();
-
-    while (recv(&buf) > 0) {
-        dnstap_encapsulation_decode(encap, buf);
-
-        if (!(msg = dnstap_encapsulation_get_message(encap))) {
-            dnstap_message_free(msg);
-        }
-    }
-}
-
-
-int write(buf, len) {
-    struct dnstap_encapsulation *encap;
-    struct dnstap *dnstap;
-    struct dnstap_message *msg;
-
-    encap = dnstap_encapsulation_protobuf_new();
-
-    msg = dnstap_message_new();
-    dnstap_message_set_type(msg, DNSTAP_MESSAGE_TYPE_AUTH_QUERY);
-    dnstap_message_set_query_message(msg, buf, len);
-
-    dnstap = dnstap_new();
-    dnstap_set_message(dnstap, msg);
-
-    dnstap_encapsulation_encode(encap, msg);
-
-    do {
-        dnstap_encapsulation_get_wire(encap, &buf, &len);
-        send(buf, len)
-    } while(dnstap_encapsulation_have_wire(encap));
-
-}
-
-
-struct dnstap_connection;
-
-conn = dnstap_connection_fstrm_new(transport, mode);
-*/
-
 int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t len)
 {
     assert(dnstap);
@@ -112,7 +60,7 @@ int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t le
     assert(!dnstap->unpacked_dnstap);
 
     if (!(dnstap->unpacked_dnstap = dnstap__dnstap__unpack(NULL, len, data))) {
-        return -1;
+        return 1;
     }
 
     dnstap->dnstap = *dnstap->unpacked_dnstap;

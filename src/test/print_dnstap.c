@@ -48,11 +48,6 @@ static const char* printable_ip_address(const uint8_t* data, size_t len)
 static void print_dnstap(const struct dnstap* d)
 {
     printf("---- dnstap\n");
-
-    /*
-     * Now we can print the available information in the message.
-     */
-
     if (dnstap_has_identity(*d)) {
         printf("identity: %s\n", printable_string(dnstap_identity(*d), dnstap_identity_length(*d)));
     }

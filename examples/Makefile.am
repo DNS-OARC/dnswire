@@ -12,7 +12,14 @@ EXTRA_DIST = print_dnstap.c create_dnstap.c
 
 if BUILD_EXAMPLES
 
-noinst_PROGRAMS = simple_reader simple_writer simple_sender simple_receiver
+noinst_PROGRAMS = reader writer simple_reader simple_writer simple_sender \
+  simple_receiver
+
+reader_SOURCES = reader.c
+reader_LDADD = ../src/libdnswire.la
+
+writer_SOURCES = writer.c
+writer_LDADD = ../src/libdnswire.la
 
 simple_reader_SOURCES = simple_reader.c
 simple_reader_LDADD = ../src/libdnswire.la
