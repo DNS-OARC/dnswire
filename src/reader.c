@@ -26,10 +26,24 @@
 #include <assert.h>
 #include <stdlib.h>
 
+enum dnswire_result dnswire_reader_init(struct dnswire_reader* handle)
+{
+    assert(handle);
+
+    if (!handle->buf) {
+        if (handle->buf = malloc(handle->size)) {
+            return dnswire_ok;
+        }
+    }
+
+    return dnswire_error;
+}
+
 enum dnswire_result dnswire_reader_set_bufsize(struct dnswire_reader* handle, size_t size)
 {
     assert(handle);
     assert(size);
+    assert(handle->buf);
 
     if (handle->left > size) {
         // we got data and it doesn't fit in the new size
@@ -83,10 +97,11 @@ enum dnswire_result dnswire_reader_set_bufmax(struct dnswire_reader* handle, siz
     return dnswire_ok;
 }
 
-enum dnswire_result dnswire_reader_add(struct dnswire_reader* handle, const uint8_t* data, size_t len)
+enum dnswire_result dnswire_reader_push(struct dnswire_reader* handle, const uint8_t* data, size_t len)
 {
     assert(handle);
     assert(data);
+    assert(handle->buf);
 
     if (handle->left < handle->size) {
         if (handle->at) {
@@ -98,17 +113,17 @@ enum dnswire_result dnswire_reader_add(struct dnswire_reader* handle, const uint
         }
 
         if (len) {
-            handle->added = handle->size - handle->left < len ? handle->size - handle->left : len;
-            memcpy(&handle->buf[handle->left], data, handle->added);
-            handle->left += handle->added;
+            handle->pushed = handle->size - handle->left < len ? handle->size - handle->left : len;
+            memcpy(&handle->buf[handle->left], data, handle->pushed);
+            handle->left += handle->pushed;
         }
     } else {
-        handle->added = 0;
+        handle->pushed = 0;
     }
 
     enum dnswire_result res;
 
-    while (1) {
+    while (handle->left) {
         res = dnswire_decoder_decode(&handle->decoder, &handle->buf[handle->at], handle->left);
 
         switch (res) {
@@ -118,7 +133,7 @@ enum dnswire_result dnswire_reader_add(struct dnswire_reader* handle, const uint
             break;
 
         case dnswire_need_more:
-            if (handle->added < len) {
+            if (handle->pushed < len) {
                 // we have more
 
                 if (handle->left < handle->size) {
@@ -144,13 +159,13 @@ enum dnswire_result dnswire_reader_add(struct dnswire_reader* handle, const uint
                     return dnswire_error;
                 }
 
-                size_t add = len - handle->added;
+                size_t add = len - handle->pushed;
                 if (handle->size - handle->left < add) {
                     add = handle->size - handle->left;
                 }
-                memcpy(&handle->buf[handle->left], &data[handle->added], add);
+                memcpy(&handle->buf[handle->left], &data[handle->pushed], add);
                 handle->left += add;
-                handle->added += add;
+                handle->pushed += add;
                 break;
             }
             return res;
@@ -165,12 +180,13 @@ enum dnswire_result dnswire_reader_add(struct dnswire_reader* handle, const uint
         }
     }
 
-    return dnswire_error;
+    return dnswire_need_more;
 }
 
 enum dnswire_result dnswire_reader_read(struct dnswire_reader* handle, int fd)
 {
     assert(handle);
+    assert(handle->buf);
 
     enum dnswire_result res;
 

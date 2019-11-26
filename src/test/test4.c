@@ -14,10 +14,13 @@ int main(int argc, const char* argv[])
 
     FILE* fp = fopen(argv[1], "w");
     if (!fp) {
-        return 2;
+        return 1;
     }
 
     struct dnswire_writer writer = DNSWIRE_WRITER_INITIALIZER;
+    if (dnswire_writer_init(&writer) != dnswire_ok) {
+        return 1;
+    }
 
     struct dnstap d = DNSTAP_INITIALIZER;
     create_dnstap(&d, "test4");

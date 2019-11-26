@@ -23,8 +23,18 @@ int main(int argc, const char* argv[])
         return 1;
     }
 
+    /*
+     * We now initialize the reader and check that it can allocate the
+     * buffers it needs.
+     */
+
     struct dnswire_reader reader = DNSWIRE_READER_INITIALIZER;
     int                   done   = 0;
+
+    if (dnswire_reader_init(&reader) != dnswire_ok) {
+        fprintf(stderr, "Unable to initialize dnswire reader\n");
+        return 1;
+    }
 
     /*
      * We now loop until we have a DNSTAP message, the stream was stopped
@@ -48,7 +58,7 @@ int main(int argc, const char* argv[])
         }
     }
 
-    dnswire_reader_cleanup(reader);
+    dnswire_reader_destroy(reader);
     fclose(fp);
 
     return 0;
