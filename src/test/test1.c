@@ -30,7 +30,7 @@ int main(int argc, const char* argv[])
 
     FILE* fp = fopen(argv[1], "r");
     if (!fp) {
-        return 2;
+        return 1;
     }
 
     int rbuf_len = atoi(argv[2]);
@@ -58,7 +58,7 @@ int main(int argc, const char* argv[])
             case tinyframe_have_control_field:
                 printf("control_field type %" PRIu32 " len %" PRIu32 " data: %*s\n", h.control_field.type, h.control_field.length, h.control_field.length, h.control_field.data);
                 if (strncmp("protobuf:dnstap.Dnstap", (const char*)h.control_field.data, h.control_field.length)) {
-                    return 3;
+                    return 1;
                 }
                 break;
             case tinyframe_have_frame:
@@ -71,7 +71,7 @@ int main(int argc, const char* argv[])
                 break;
             case tinyframe_error:
                 printf("error\n");
-                return 2;
+                return 1;
             case tinyframe_stopped:
                 printf("stopped\n");
                 fclose(fp);

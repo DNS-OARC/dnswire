@@ -24,22 +24,34 @@ int main(int argc, const char* argv[])
     }
 
     /*
+     * We first initialize the writer and check that it can allocate the
+     * buffers it needs.
+     */
+
+    struct dnswire_writer writer = DNSWIRE_WRITER_INITIALIZER;
+
+    if (dnswire_writer_init(&writer) != dnswire_ok) {
+        fprintf(stderr, "Unable to initialize dnswire writer\n");
+        return 1;
+    }
+
+    /*
      * Now we create a DNSTAP message.
      */
 
     struct dnstap d = create_dnstap("simple_writer");
 
-    struct dnswire_writer writer = DNSWIRE_WRITER_INITIALIZER;
-    int                   done   = 0;
-
     /*
      * We set the DNSTAP message the writer should write.
      */
+
     dnswire_writer_set_dnstap(writer, &d);
 
     /*
      * We now loop and wait for the DNSTAP message to be written.
      */
+
+    int done = 0;
 
     while (!done) {
         switch (dnswire_writer_fwrite(&writer, fp)) {
@@ -66,7 +78,7 @@ int main(int argc, const char* argv[])
         }
     }
 
-    dnswire_writer_cleanup(writer);
+    dnswire_writer_destroy(writer);
     fclose(fp);
     return 0;
 }

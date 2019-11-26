@@ -11,7 +11,7 @@ int main(int argc, const char* argv[])
 
     FILE* fp = fopen(argv[1], "w");
     if (!fp) {
-        return 2;
+        return 1;
     }
 
     struct dnstap d = DNSTAP_INITIALIZER;
