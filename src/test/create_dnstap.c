@@ -7,6 +7,8 @@
 #include <time.h>
 
 static char dns_wire_format_placeholder[] = "dns_wire_format_placeholder";
+static unsigned char query_address[sizeof(struct in_addr)];
+static unsigned char response_address[sizeof(struct in_addr)];
 
 static inline void create_dnstap(struct dnstap* d, const char* identity)
 {
@@ -17,7 +19,6 @@ static inline void create_dnstap(struct dnstap* d, const char* identity)
     dnstap_message_set_socket_family(*d, DNSTAP_SOCKET_FAMILY_INET);
     dnstap_message_set_socket_protocol(*d, DNSTAP_SOCKET_PROTOCOL_UDP);
 
-    unsigned char query_address[sizeof(struct in_addr)];
     if (inet_pton(AF_INET, "127.0.0.1", query_address) != 1) {
         fprintf(stderr, "inet_pton(127.0.0.1) failed: %s\n", strerror(errno));
     } else {
@@ -30,7 +31,6 @@ static inline void create_dnstap(struct dnstap* d, const char* identity)
     dnstap_message_set_query_time_sec(*d, query_time.tv_sec);
     dnstap_message_set_query_time_nsec(*d, query_time.tv_nsec);
 
-    unsigned char response_address[sizeof(struct in_addr)];
     if (inet_pton(AF_INET, "127.0.0.1", response_address) != 1) {
         fprintf(stderr, "inet_pton(127.0.0.1) failed: %s\n", strerror(errno));
     } else {

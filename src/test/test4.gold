@@ -6,9 +6,9 @@ message:
   type: MESSAGE
   socket_family: INET
   socket_protocol: UDP
-  query_address: 0.16.0.0
+  query_address: 127.0.0.1
   query_port: 12345
-  response_address: 0.0.0.0
+  response_address: 127.0.0.1
   response_port: 53
   query_message_length: 27
   query_message: dns_wire_format_placeholder
@@ -22,9 +22,9 @@ message:
   type: MESSAGE
   socket_family: INET
   socket_protocol: UDP
-  query_address: 0.16.0.0
+  query_address: 127.0.0.1
   query_port: 12345
-  response_address: 0.0.0.0
+  response_address: 127.0.0.1
   response_port: 53
   query_message_length: 27
   query_message: dns_wire_format_placeholder

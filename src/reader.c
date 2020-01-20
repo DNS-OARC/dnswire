@@ -31,7 +31,7 @@ enum dnswire_result dnswire_reader_init(struct dnswire_reader* handle)
     assert(handle);
 
     if (!handle->buf) {
-        if (handle->buf = malloc(handle->size)) {
+        if ((handle->buf = malloc(handle->size))) {
             return dnswire_ok;
         }
     }

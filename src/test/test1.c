@@ -75,13 +75,11 @@ int main(int argc, const char* argv[])
             case tinyframe_stopped:
                 printf("stopped\n");
                 fclose(fp);
-                r = 0;
-                break;
+                return 0;
             case tinyframe_finished:
                 printf("finished\n");
                 fclose(fp);
-                r = 0;
-                break;
+                return 0;
             default:
                 break;
             }

@@ -3,10 +3,11 @@ MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
 CLEANFILES =
 
 AM_CFLAGS = -I$(top_srcdir)/src \
-  -I$(tinyframe_CFLAGS) \
-  -I$(protobuf_c_CFLAGS)
+  $(tinyframe_CFLAGS) \
+  $(protobuf_c_CFLAGS)
 
-AM_LDFLAGS = $(protobuf_c_LIBS) $(tinyframe_LIBS)
+AM_LDFLAGS = $(protobuf_c_LIBS) \
+  $(tinyframe_LIBS)
 
 EXTRA_DIST = print_dnstap.c create_dnstap.c
 
