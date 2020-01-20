@@ -5,8 +5,8 @@ EXTRA_DIST =
 
 SUBDIRS = test
 
-AM_CFLAGS = -I$(tinyframe_CFLAGS) \
-  -I$(protobuf_c_CFLAGS)
+AM_CFLAGS = $(tinyframe_CFLAGS) \
+  $(protobuf_c_CFLAGS)
 
 lib_LTLIBRARIES = libdnswire.la
 
@@ -19,7 +19,8 @@ nobase_include_HEADERS = dnswire/decoder.h dnswire/dnstap.h \
 nobase_nodist_include_HEADERS = dnswire/version.h dnswire/dnstap.pb-c.h \
   dnswire/dnstap-macros.h
 libdnswire_la_LDFLAGS = -version-info $(DNSWIRE_LIBRARY_VERSION) \
-  -ltinyframe -lprotobuf-c
+  $(protobuf_c_LIBS) \
+  $(tinyframe_LIBS)
 
 CLEANFILES += $(nodist_libdnswire_la_SOURCES)
 EXTRA_DIST += dnstap.pb/dnstap.proto dnstap.pb/LICENSE dnstap.pb/README.md

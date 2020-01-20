@@ -4,8 +4,8 @@ CLEANFILES = test*.log test*.trs \
   test1.out test2.out test2.dnstap test3.out test4.dnstap test4.out
 
 AM_CFLAGS = -I$(top_srcdir)/src \
-  -I$(tinyframe_CFLAGS) \
-  -I$(protobuf_c_CFLAGS)
+  $(tinyframe_CFLAGS) \
+  $(protobuf_c_CFLAGS)
 
 check_PROGRAMS = test1 test2 test3 test4
 TESTS = test1.sh test2.sh test3.sh test4.sh
