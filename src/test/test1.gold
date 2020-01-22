@@ -5,7 +5,7 @@ frame len 81
 ---- dnstap
 version: kdig 2.6.5
 message:
-  type: MESSAGE
+  type: TOOL_QUERY
   query_time: 1573730567.83350
   socket_family: INET
   socket_protocol: UDP
@@ -20,7 +20,7 @@ frame len 97
 ---- dnstap
 version: kdig 2.6.5
 message:
-  type: MESSAGE
+  type: TOOL_RESPONSE
   response_time: 1573730567.65816434
   socket_family: INET
   socket_protocol: UDP

@@ -10,6 +10,7 @@
 - `writer`: Example of writing DNSTAP using `tinyframe` to show how Frame Streams work
 - `receiver`: Example of receiving a DNSTAP message over a TCP connection and printing it's content, using `tinyframe` to show how Frame Streams work
 - `sender`: Example of constructing a DNSTAP message and sending it over a TCP connection, using `tinyframe` to show how Frame Streams work
+- `simple_reader_sender`: Example of a reader that read DNSTAP from a file and then sends the DNSTAP messages over a TCP connection
 
 ## simple_receiver and simple_sender
 

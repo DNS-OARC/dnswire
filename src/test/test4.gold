@@ -3,7 +3,7 @@ read 304
 identity: test4
 version: 0.1.0
 message:
-  type: MESSAGE
+  type: TOOL_QUERY
   socket_family: INET
   socket_protocol: UDP
   query_address: 127.0.0.1
@@ -19,7 +19,7 @@ message:
 identity: test4
 version: 0.1.0
 message:
-  type: MESSAGE
+  type: TOOL_QUERY
   socket_family: INET
   socket_protocol: UDP
   query_address: 127.0.0.1

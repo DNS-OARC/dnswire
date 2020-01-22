@@ -14,7 +14,7 @@ EXTRA_DIST = print_dnstap.c create_dnstap.c
 if BUILD_EXAMPLES
 
 noinst_PROGRAMS = reader writer sender receiver simple_reader simple_writer \
-  simple_sender simple_receiver
+  simple_sender simple_receiver simple_reader_sender
 
 reader_SOURCES = reader.c
 reader_LDADD = ../src/libdnswire.la
@@ -39,6 +39,9 @@ simple_sender_LDADD = ../src/libdnswire.la
 
 simple_receiver_SOURCES = simple_receiver.c
 simple_receiver_LDADD = ../src/libdnswire.la
+
+simple_reader_sender_SOURCES = simple_reader_sender.c
+simple_reader_sender_LDADD = ../src/libdnswire.la
 
 if HAVE_LIBUV
 
