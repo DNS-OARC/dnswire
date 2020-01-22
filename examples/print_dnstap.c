@@ -64,7 +64,7 @@ static void print_dnstap(const struct dnstap* d)
     }
 
     if (dnstap_type(*d) == DNSTAP_TYPE_MESSAGE && dnstap_has_message(*d)) {
-        printf("message:\n  type: %s\n", DNSTAP_TYPE_STRING[dnstap_type(*d)]);
+        printf("message:\n  type: %s\n", DNSTAP_MESSAGE_TYPE_STRING[dnstap_message_type(*d)]);
 
         if (dnstap_message_has_query_time_sec(*d) && dnstap_message_has_query_time_nsec(*d)) {
             printf("  query_time: %" PRIu64 ".%" PRIu32 "\n", dnstap_message_query_time_sec(*d), dnstap_message_query_time_nsec(*d));

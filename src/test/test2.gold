@@ -6,7 +6,7 @@ frame len 121
 identity: test2
 version: 0.1.0
 message:
-  type: MESSAGE
+  type: TOOL_QUERY
   socket_family: INET
   socket_protocol: UDP
   query_address: 127.0.0.1

@@ -49,7 +49,7 @@ int main(int argc, const char* argv[])
         return 1;
     }
 
-    addr->sin_port = atoi(argv[2]);
+    addr->sin_port = ntohs(atoi(argv[2]));
 
     int sockfd = socket(addr->sin_family, SOCK_STREAM, IPPROTO_TCP);
     if (sockfd == -1) {
