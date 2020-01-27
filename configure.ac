@@ -37,6 +37,11 @@ AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=CFLAGS], [Add
   AS_VAR_APPEND(LDFLAGS, [" $withval"])
 ])
 
+# Check --enable-trace
+#AH_TEMPLATE([DNSWIRE_TRACE], [Defined if tracing processing is enabled])
+AC_SUBST([DNSWIRE_TRACE], [0])
+AC_ARG_ENABLE([trace], [AS_HELP_STRING([--enable-trace], [Enable trace output of processing])], [AC_SUBST([DNSWIRE_TRACE], [1])])
+
 # Check --disable-examples
 AC_ARG_ENABLE([examples], [AS_HELP_STRING([--disable-examples], [do not build examples])], [
 AC_MSG_NOTICE([examples ${enableval}])
@@ -68,5 +73,6 @@ AC_CONFIG_FILES([
   src/test/Makefile
   examples/Makefile
   src/dnswire/version.h
+  src/dnswire/trace.h
 ])
 AC_OUTPUT

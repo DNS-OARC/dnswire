@@ -18,7 +18,7 @@ uv_tcp_t     sock;
 uv_connect_t conn;
 char         rbuf[BUF_SIZE];
 
-struct dnswire_reader reader = DNSWIRE_READER_INITIALIZER;
+struct dnswire_reader reader;
 
 void client_alloc_buffer(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
 {
@@ -35,7 +35,7 @@ void client_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf)
         size_t pushed = 0;
 
         while (pushed < nread) {
-            enum dnswire_result res = dnswire_reader_push(&reader, (uint8_t*)&buf->base[pushed], nread - pushed);
+            enum dnswire_result res = dnswire_reader_push(&reader, (uint8_t*)&buf->base[pushed], nread - pushed, 0, 0);
 
             pushed += dnswire_reader_pushed(reader);
 
@@ -89,7 +89,7 @@ void on_connect(uv_connect_t* req, int status)
 
 int main(int argc, const char* argv[])
 {
-    if (argc < 2) {
+    if (argc < 3) {
         fprintf(stderr, "usage: client_receiver_uv <IP> <port>\n");
         return 1;
     }
@@ -101,6 +101,14 @@ int main(int argc, const char* argv[])
 
     if (dnswire_reader_init(&reader) != dnswire_ok) {
         fprintf(stderr, "Unable to initialize dnswire reader\n");
+        return 1;
+    }
+
+    /*
+     * We set this reader to reject bidirectional communication.
+     */
+    if (dnswire_reader_allow_bidirectional(&reader, false) != dnswire_ok) {
+        fprintf(stderr, "Unable to deny bidirectional communication\n");
         return 1;
     }
 

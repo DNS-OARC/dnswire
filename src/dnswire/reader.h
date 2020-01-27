@@ -21,11 +21,25 @@
 
 #include <dnswire/dnswire.h>
 #include <dnswire/decoder.h>
+#include <dnswire/encoder.h>
 
 #include <stdlib.h>
 
 #ifndef __dnswire_h_reader
 #define __dnswire_h_reader 1
+
+enum dnswire_reader_state {
+    dnswire_reader_reading_control  = 0,
+    dnswire_reader_decoding_control = 1,
+    dnswire_reader_encoding_accept  = 2,
+    dnswire_reader_writing_accept   = 3,
+    dnswire_reader_reading          = 4,
+    dnswire_reader_decoding         = 5,
+    dnswire_reader_encoding_finish  = 6,
+    dnswire_reader_writing_finish   = 7,
+    dnswire_reader_done             = 8,
+};
+extern const char* const dnswire_reader_state_string[];
 
 /*
  * Attributes:
@@ -37,22 +51,20 @@
  * - pushed: How much data that was pushed to the buffer by `dnswire_reader_push()`
  */
 struct dnswire_reader {
+    enum dnswire_reader_state state;
+
     struct dnswire_decoder decoder;
     uint8_t*               buf;
     size_t                 size, inc, max, at, left, pushed;
+
+    struct dnswire_encoder encoder;
+    uint8_t*               write_buf;
+    size_t                 write_size, write_inc, write_max, write_at, write_left;
+
+    bool allow_bidirectional, is_bidirectional;
 };
 
-#define DNSWIRE_READER_INITIALIZER              \
-    {                                           \
-        .decoder = DNSWIRE_DECODER_INITIALIZER, \
-        .buf     = 0,                           \
-        .size    = DNSWIRE_DEFAULT_BUF_SIZE,    \
-        .inc     = DNSWIRE_DEFAULT_BUF_SIZE,    \
-        .max     = DNSWIRE_MAXIMUM_BUF_SIZE,    \
-        .at      = 0,                           \
-        .left    = 0,                           \
-        .pushed  = 0,                           \
-    }
+enum dnswire_result dnswire_reader_init(struct dnswire_reader*);
 
 #define dnswire_reader_pushed(r) (r).pushed
 #define dnswire_reader_dnstap(r) (&(r).decoder.dnstap)
@@ -60,17 +72,17 @@ struct dnswire_reader {
     dnswire_decoder_cleanup((r).decoder)
 #define dnswire_reader_destroy(r) \
     free((r).buf);                \
+    free((r).write_buf);          \
     dnswire_decoder_cleanup((r).decoder)
+#define dnswire_reader_is_bidirectional(r) (r).is_bidirectional
 
-enum dnswire_result dnswire_reader_init(struct dnswire_reader*);
-
+enum dnswire_result dnswire_reader_allow_bidirectional(struct dnswire_reader*, bool);
 enum dnswire_result dnswire_reader_set_bufsize(struct dnswire_reader*, size_t);
 enum dnswire_result dnswire_reader_set_bufinc(struct dnswire_reader*, size_t);
 enum dnswire_result dnswire_reader_set_bufmax(struct dnswire_reader*, size_t);
 
-enum dnswire_result dnswire_reader_push(struct dnswire_reader*, const uint8_t*, size_t);
-enum dnswire_result dnswire_reader_read(struct dnswire_reader*, int);
-
+enum dnswire_result               dnswire_reader_push(struct dnswire_reader*, const uint8_t*, size_t, uint8_t*, size_t*);
+enum dnswire_result               dnswire_reader_read(struct dnswire_reader*, int);
 static inline enum dnswire_result dnswire_reader_fread(struct dnswire_reader* handle, FILE* fp)
 {
     return dnswire_reader_read(handle, fileno(fp));

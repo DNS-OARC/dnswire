@@ -28,24 +28,31 @@
 #define __dnswire_h_decoder 1
 
 enum dnswire_decoder_state {
-    dnswire_decoder_check_control_start,
-    dnswire_decoder_check_control_field,
-    dnswire_decoder_reading_frames,
-    dnswire_decoder_done,
-    dnswire_decoder_error,
+    dnswire_decoder_reading_control = 0,
+    dnswire_decoder_checking_ready  = 1,
+    dnswire_decoder_checking_accept = 2,
+    dnswire_decoder_reading_start   = 3,
+    dnswire_decoder_checking_start  = 4,
+    dnswire_decoder_reading_frames  = 5,
+    dnswire_decoder_checking_finish = 6,
+    dnswire_decoder_done            = 7,
 };
+extern const char* const dnswire_decoder_state_string[];
 
 struct dnswire_decoder {
     enum dnswire_decoder_state state;
     struct tinyframe_reader    reader;
     struct dnstap              dnstap;
+
+    unsigned ready_support_dnstap_protobuf : 1;
+    unsigned accept_support_dnstap_protobuf : 1;
 };
 
-#define DNSWIRE_DECODER_INITIALIZER                    \
-    {                                                  \
-        .state  = dnswire_decoder_check_control_start, \
-        .reader = TINYFRAME_READER_INITIALIZER,        \
-        .dnstap = DNSTAP_INITIALIZER,                  \
+#define DNSWIRE_DECODER_INITIALIZER                \
+    {                                              \
+        .state  = dnswire_decoder_reading_control, \
+        .reader = TINYFRAME_READER_INITIALIZER,    \
+        .dnstap = DNSTAP_INITIALIZER,              \
     }
 
 #define dnswire_decoder_decoded(d) (d).reader.bytes_read

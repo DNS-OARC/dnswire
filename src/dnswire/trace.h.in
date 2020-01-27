@@ -19,16 +19,23 @@
  * along with dnswire library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
+#ifndef __dnswire_h_trace
+#define __dnswire_h_trace 1
 
-#include "dnswire/dnswire.h"
+#if @DNSWIRE_TRACE@
+#define DNSWIRE_TRACE 1
+#include <stdio.h>
+#include <ctype.h>
+#include <stdint.h>
+const char* __printable_string(const uint8_t* data, size_t len);
+#define __trace(x...)                                \
+    fprintf(stderr, "dnswire %s(): ", __func__); \
+    fprintf(stderr, x);                            \
+    fprintf(stderr, "\n"); \
+    fflush(stderr);
+#else
+#define __trace(x...)
+#define __printable_string(x...)
+#endif
 
-const char* const dnswire_result_string[] = {
-    "ok",
-    "error",
-    "again",
-    "need_more",
-    "have_dnstap",
-    "endofdata",
-    "bidirectional",
-};
+#endif

@@ -28,12 +28,15 @@
 #define __dnswire_h_encoder 1
 
 enum dnswire_encoder_state {
-    dnswire_encoder_control_start,
-    dnswire_encoder_frames,
-    dnswire_encoder_control_stop,
-    dnswire_encoder_done,
-    dnswire_encoder_error,
+    dnswire_encoder_control_ready  = 0,
+    dnswire_encoder_control_start  = 1,
+    dnswire_encoder_control_accept = 2,
+    dnswire_encoder_control_finish = 3,
+    dnswire_encoder_frames         = 4,
+    dnswire_encoder_control_stop   = 5,
+    dnswire_encoder_done           = 6,
 };
+extern const char* const dnswire_encoder_state_string[];
 
 struct dnswire_encoder {
     enum dnswire_encoder_state state;

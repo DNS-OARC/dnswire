@@ -1,6 +1,9 @@
 #!/bin/sh -xe
 
-rm -f test2.dnstap
-./test2 test2.dnstap
-./test1 test2.dnstap 4096 | grep -v _time > test2.out
+./reader_push "$srcdir/test.dnstap" 10
+./reader_push "$srcdir/test.dnstap" 18
+./reader_push "$srcdir/test.dnstap" 32
+./reader_push "$srcdir/test.dnstap" 64
+
+./reader_push "$srcdir/test.dnstap" 4096 > test2.out
 diff -u "$srcdir/test2.gold" test2.out

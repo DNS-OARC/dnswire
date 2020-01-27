@@ -26,12 +26,13 @@
 #define DNSWIRE_MAXIMUM_BUF_SIZE (64 * 1024)
 
 enum dnswire_result {
-    dnswire_ok          = 0,
-    dnswire_error       = 1,
-    dnswire_again       = 2,
-    dnswire_need_more   = 3,
-    dnswire_have_dnstap = 4,
-    dnswire_endofdata   = 5,
+    dnswire_ok            = 0,
+    dnswire_error         = 1,
+    dnswire_again         = 2,
+    dnswire_need_more     = 3,
+    dnswire_have_dnstap   = 4,
+    dnswire_endofdata     = 5,
+    dnswire_bidirectional = 6,
 };
 extern const char* const dnswire_result_string[];
 

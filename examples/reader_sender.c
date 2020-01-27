@@ -8,14 +8,14 @@
 #include <stdlib.h>
 
 /*
- * This is a combination of simple_reader and simpler_sender, comments may
+ * This is a combination of reader and simpler_sender, comments may
  * be a bit off since they haven't been updated for this.
  */
 
 int main(int argc, const char* argv[])
 {
-    if (argc < 3) {
-        fprintf(stderr, "usage: simple_reader_sender <file> <IP> <port>\n");
+    if (argc < 4) {
+        fprintf(stderr, "usage: reader_sender <file> <IP> <port>\n");
         return 1;
     }
 
@@ -34,8 +34,8 @@ int main(int argc, const char* argv[])
      * buffers it needs.
      */
 
-    struct dnswire_reader reader = DNSWIRE_READER_INITIALIZER;
-    int                   done   = 0;
+    struct dnswire_reader reader;
+    int                   done = 0;
 
     if (dnswire_reader_init(&reader) != dnswire_ok) {
         fprintf(stderr, "Unable to initialize dnswire reader\n");
@@ -47,7 +47,7 @@ int main(int argc, const char* argv[])
      * buffers it needs.
      */
 
-    struct dnswire_writer writer = DNSWIRE_WRITER_INITIALIZER;
+    struct dnswire_writer writer;
 
     if (dnswire_writer_init(&writer) != dnswire_ok) {
         fprintf(stderr, "Unable to initialize dnswire writer\n");
@@ -119,7 +119,7 @@ int main(int argc, const char* argv[])
                     break;
                 default:
                     fprintf(stderr, "dnswire_writer_write() error\n");
-                    done = 1;
+                    done  = 1;
                     done2 = 2;
                 }
             }

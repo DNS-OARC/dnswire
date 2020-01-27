@@ -215,7 +215,7 @@ void tick(uv_timer_t* handle)
 
 int main(int argc, const char* argv[])
 {
-    if (argc < 2) {
+    if (argc < 3) {
         fprintf(stderr, "usage: daemon_sender_uv <IP> <port>\n");
         return 1;
     }

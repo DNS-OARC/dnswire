@@ -19,12 +19,13 @@ int main(int argc, const char* argv[])
 
     int rbuf_len = atoi(argv[2]);
 
-    struct dnswire_reader reader = DNSWIRE_READER_INITIALIZER;
+    struct dnswire_reader reader;
     if (dnswire_reader_init(&reader) != dnswire_ok) {
         return 1;
     }
+    dnswire_reader_allow_bidirectional(&reader, false);
 
-    size_t  r;
+    size_t  have = 0, at = 0;
     uint8_t rbuf[rbuf_len];
     int     done = 0;
 
@@ -34,24 +35,28 @@ int main(int argc, const char* argv[])
         switch (res) {
         case dnswire_have_dnstap:
             print_dnstap(dnswire_reader_dnstap(reader));
-            res = dnswire_need_more;
-            break;
+        // fallthrough
         case dnswire_again:
-            res = dnswire_reader_push(&reader, rbuf, 0);
+            res = dnswire_reader_push(&reader, &rbuf[at], have, 0, 0);
+            have -= dnswire_reader_pushed(reader);
+            at += dnswire_reader_pushed(reader);
             break;
         case dnswire_need_more:
-            r = fread(rbuf, 1, sizeof(rbuf), fp);
-            if (r > 0) {
-                printf("read %zu\n", r);
+            if (!have) {
+                have = fread(rbuf, 1, sizeof(rbuf), fp);
+                printf("read %zu\n", have);
+                at = 0;
             }
-            res = dnswire_reader_push(&reader, rbuf, r);
+            res = dnswire_reader_push(&reader, &rbuf[at], have, 0, 0);
+            have -= dnswire_reader_pushed(reader);
+            at += dnswire_reader_pushed(reader);
             break;
         case dnswire_endofdata:
             done = 1;
             break;
         default:
-            fprintf(stderr, "dnswire_reader_add() error\n");
-            done = 1;
+            fprintf(stderr, "dnswire_reader_push() error\n");
+            return 1;
         }
     }
 

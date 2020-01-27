@@ -1,4 +1,4 @@
-#include <tinyframe/tinyframe.h>
+#include <dnswire/reader.h>
 
 #include <stdio.h>
 #include <errno.h>
@@ -6,190 +6,103 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/un.h>
 
 #include "print_dnstap.c"
-
-void handle_client(int fd)
-{
-    /*
-     * As we will be receiving we need to support getting half a frame
-     * and continuing on that so we do a loop where we call
-     * `tinyframe_read()` and when it says it needs more bytes we do
-     * a `recv()` on the socket.
-     *
-     * As we call `tinyframe_read()` the first time without any data
-     * (`have` == 0) it will return that it needs more.
-     */
-
-    struct tinyframe_reader reader = TINYFRAME_READER_INITIALIZER;
-
-    ssize_t               r;
-    size_t                have = 0;
-    uint8_t               buf[4096];
-    enum tinyframe_result res;
-
-    while (1) {
-        switch ((res = tinyframe_read(&reader, buf, have))) {
-        case tinyframe_have_control:
-            /*
-             * If we get a control frame we check that it's a start one,
-             * this code can be extended with checks that you only get one
-             * start frame and it's the first you get.
-             */
-            if (reader.control.type != TINYFRAME_CONTROL_START) {
-                fprintf(stderr, "Not a control type start\n");
-                return;
-            }
-            printf("got control start\n");
-            break;
-
-        case tinyframe_have_control_field:
-            /*
-             * We have a control field, so lets check that it's a
-             * `content type` and the content we want is
-             * `protobuf:dnstap.Dnstap`.
-             */
-            if (reader.control_field.type != TINYFRAME_CONTROL_FIELD_CONTENT_TYPE
-                || strncmp("protobuf:dnstap.Dnstap", (const char*)reader.control_field.data, reader.control_field.length)) {
-                fprintf(stderr, "Not content type dnstap\n");
-                return;
-            }
-            printf("got content type DNSTAP\n");
-            break;
-
-        case tinyframe_have_frame: {
-            /*
-             * We got a frame, lets decode and print the DNSTAP content.
-             */
-
-            struct dnstap d = DNSTAP_INITIALIZER;
-
-            /*
-             * First we decode the DNSTAP protobuf message.
-             */
-
-            if (dnstap_decode_protobuf(&d, reader.frame.data, reader.frame.length)) {
-                fprintf(stderr, "dnstap_decode_protobuf() failed\n");
-                return;
-            }
-
-            /*
-             * Now we print the DNSTAP message.
-             */
-
-            print_dnstap(&d);
-
-            /*
-             * And finally we cleanup protobuf allocations.
-             */
-
-            dnstap_cleanup(&d);
-            break;
-        }
-
-        case tinyframe_need_more:
-            /*
-             * We need more bytes! Let's try and receive some.
-             *
-             * NOTE: This will add bytes to those we already have.
-             */
-            if (have >= sizeof(buf)) {
-                fprintf(stderr, "needed more but buffer was full\n");
-                return;
-            }
-
-            if ((r = recv(fd, &buf[have], sizeof(buf) - have, 0)) < 1) {
-                if (r < 0) {
-                    fprintf(stderr, "read() failed: %s\n", strerror(errno));
-                }
-                return;
-            }
-
-            printf("received %zd bytes\n", r);
-            have += r;
-            break;
-
-        case tinyframe_error:
-            fprintf(stderr, "tinyframe_read() error\n");
-            return;
-
-        case tinyframe_stopped:
-            printf("stopped\n");
-            return;
-
-        case tinyframe_finished:
-            printf("finished\n");
-            return;
-
-        default:
-            fprintf(stderr, "tinyframe_read() unexpected result returned\n");
-            return;
-        }
-
-        /*
-         * If we processed any content in the buffer we might have some left
-         * so we move what's left to the start of the buffer.
-         */
-        if (res != tinyframe_need_more) {
-            if (reader.bytes_read > have) {
-                fprintf(stderr, "tinyframe problem, bytes processed more then we had\n");
-                return;
-            }
-
-            have -= reader.bytes_read;
-
-            if (have) {
-                memmove(buf, &buf[reader.bytes_read], have);
-            }
-        }
-    }
-}
 
 int main(int argc, const char* argv[])
 {
     if (argc < 2) {
-        fprintf(stderr, "usage: simple_receiver <IP> <port>\n");
+        fprintf(stderr, "usage: receiver [ <IP> <port> | <unix socket path> ]\n");
         return 1;
     }
 
     /*
-     * We setup and listen on the IP and port given on command line.
+     * We first initialize the reader and check that it can allocate the
+     * buffers it needs.
      */
 
-    struct sockaddr_storage addr_store;
-    struct sockaddr_in*     addr = (struct sockaddr_in*)&addr_store;
-    socklen_t               addrlen;
+    struct dnswire_reader reader;
 
-    if (strchr(argv[1], ':')) {
-        addr->sin_family = AF_INET6;
-        addrlen          = sizeof(struct sockaddr_in6);
+    if (dnswire_reader_init(&reader) != dnswire_ok) {
+        fprintf(stderr, "Unable to initialize dnswire reader\n");
+        return 1;
+    }
+
+    /*
+     * Allow bidirectional communication over the TCP or UNIX socket.
+     */
+    if (dnswire_reader_allow_bidirectional(&reader, true) != dnswire_ok) {
+        fprintf(stderr, "Unable to set dnswire reader to bidirectional mode\n");
+        return 1;
+    }
+
+    int sockfd;
+
+    if (argc == 2) {
+        /*
+         * We setup a unix socket at the given path on command line.
+         */
+
+        struct sockaddr_un path;
+
+        memset(&path, 0, sizeof(struct sockaddr_un));
+        path.sun_family = AF_UNIX;
+        strncpy(path.sun_path, argv[1], sizeof(path.sun_path) - 1);
+
+        sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+        if (sockfd == -1) {
+            fprintf(stderr, "socket() failed: %s\n", strerror(errno));
+            return 1;
+        }
+        printf("socket\n");
+
+        if (bind(sockfd, (struct sockaddr*)&path, sizeof(struct sockaddr_un))) {
+            fprintf(stderr, "bind() failed: %s\n", strerror(errno));
+            close(sockfd);
+            return 1;
+        }
+        printf("bind\n");
     } else {
-        addr->sin_family = AF_INET;
-        addrlen          = sizeof(struct sockaddr_in);
+        /*
+         * We setup and listen on the IP and port given on command line.
+         */
+
+        struct sockaddr_storage addr_store;
+        struct sockaddr_in*     addr = (struct sockaddr_in*)&addr_store;
+        socklen_t               addrlen;
+
+        if (strchr(argv[1], ':')) {
+            addr->sin_family = AF_INET6;
+            addrlen          = sizeof(struct sockaddr_in6);
+        } else {
+            addr->sin_family = AF_INET;
+            addrlen          = sizeof(struct sockaddr_in);
+        }
+
+        if (inet_pton(addr->sin_family, argv[1], &addr->sin_addr) != 1) {
+            fprintf(stderr, "inet_pton(%s) failed: %s\n", argv[1], strerror(errno));
+            return 1;
+        }
+
+        addr->sin_port = ntohs(atoi(argv[2]));
+
+        sockfd = socket(addr->sin_family, SOCK_STREAM, IPPROTO_TCP);
+        if (sockfd == -1) {
+            fprintf(stderr, "socket() failed: %s\n", strerror(errno));
+            return 1;
+        }
+        printf("socket\n");
+
+        if (bind(sockfd, (struct sockaddr*)addr, addrlen)) {
+            fprintf(stderr, "bind() failed: %s\n", strerror(errno));
+            close(sockfd);
+            return 1;
+        }
+        printf("bind\n");
     }
 
-    if (inet_pton(addr->sin_family, argv[1], &addr->sin_addr) != 1) {
-        fprintf(stderr, "inet_pton(%s) failed: %s\n", argv[1], strerror(errno));
-        return 1;
-    }
-
-    addr->sin_port = atoi(argv[2]);
-
-    int sockfd = socket(addr->sin_family, SOCK_STREAM, IPPROTO_TCP);
-    if (sockfd == -1) {
-        fprintf(stderr, "socket() failed: %s\n", strerror(errno));
-        return 1;
-    }
-    printf("socket\n");
-
-    if (bind(sockfd, (struct sockaddr*)addr, addrlen)) {
-        fprintf(stderr, "bind() failed: %s\n", strerror(errno));
-        close(sockfd);
-        return 1;
-    }
-    printf("bind\n");
-
-    if (listen(sockfd, 0)) {
+    if (listen(sockfd, 1)) {
         fprintf(stderr, "listen() failed: %s\n", strerror(errno));
         close(sockfd);
         return 1;
@@ -206,9 +119,43 @@ int main(int argc, const char* argv[])
 
     /*
      * We have accepted connection from the sender!
+     *
+     * We now loop until we have a DNSTAP message, the stream was stopped
+     * or we got an error.
      */
 
-    handle_client(clifd);
+    int done = 0;
+
+    printf("receiving...\n");
+    while (!done) {
+        switch (dnswire_reader_read(&reader, clifd)) {
+        case dnswire_have_dnstap:
+            /*
+             * We received a DNSTAP message, let's print it.
+             */
+            print_dnstap(dnswire_reader_dnstap(reader));
+            break;
+        case dnswire_again:
+        case dnswire_need_more:
+            /*
+             * This indicates that we need to call the reader again as it
+             * will only do one pass in a non-blocking fasion.
+             */
+            break;
+        case dnswire_endofdata:
+            /*
+             * The stream was stopped from the sender side, we're done!
+             */
+            printf("stopped\n");
+            done = 1;
+            break;
+        default:
+            fprintf(stderr, "dnswire_reader_read() error\n");
+            done = 1;
+        }
+    }
+
+    dnswire_reader_destroy(reader);
 
     /*
      * Time to exit, let's shutdown and close the sockets.
