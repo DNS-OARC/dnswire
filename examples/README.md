@@ -1,32 +1,28 @@
 # Examples
 
-- `simple_reader`: Example of reading DNSTAP from a file and printing it's content, using `dnswire_reader`
-- `simple_writer`: Example of constructing a DNSTAP message and writing it to a file, using `dnswire_writer`
-- `simple_receiver`: Example of receiving a DNSTAP message over a TCP connection and printing it's content, using `dnswire_reader`
-- `simple_sender`: Example of constructing a DNSTAP message and sending it over a TCP connection, using `dnswire_writer`
-- `daemon_sender_uv`: Example of a daemon that will continuously send DNSTAP messages to connected clients, using the event engine `libuv` and `dnstap_encode_protobuf` along with `tinyframe` to encode once and send to many
-- `client_receiver_uv`: Example of a client that will receive DNSTAP message from the daemon, using the event engine `libuv` and `dnswire_reader`
-- `reader`: Example of reading DNSTAP using `tinyframe` to show how Frame Streams work
-- `writer`: Example of writing DNSTAP using `tinyframe` to show how Frame Streams work
-- `receiver`: Example of receiving a DNSTAP message over a TCP connection and printing it's content, using `tinyframe` to show how Frame Streams work
-- `sender`: Example of constructing a DNSTAP message and sending it over a TCP connection, using `tinyframe` to show how Frame Streams work
-- `simple_reader_sender`: Example of a reader that read DNSTAP from a file and then sends the DNSTAP messages over a TCP connection
+- `reader`: Example of reading DNSTAP from a file and printing it's content, using `dnswire_reader` (unidirectional mode)
+- `writer`: Example of constructing a DNSTAP message and writing it to a file, using `dnswire_writer` (unidirectional mode)
+- `receiver`: Example of receiving a DNSTAP message over a TCP connection and printing it's content, using `dnswire_reader` (bidirectional mode)
+- `sender`: Example of constructing a DNSTAP message and sending it over a TCP connection, using `dnswire_writer` (bidirectional mode)
+- `daemon_sender_uv`: Example of a daemon that will continuously send DNSTAP messages to connected clients (unidirectional mode), using the event engine `libuv` and `dnstap_encode_protobuf` along with `tinyframe` to encode once and send to many
+- `client_receiver_uv`: Example of a client that will receive DNSTAP message from the daemon (unidirectional mode), using the event engine `libuv` and `dnswire_reader` with the buffer push interface
+- `reader_sender`: Example of a reader that read DNSTAP from a file (unidirectional mode) and then sends the DNSTAP messages over a TCP connection (bidirectional mode)
 
-## simple_receiver and simple_sender
+## receiver and sender
 
 These examples uses the way of connecting as implemented in the `fstrm`
-library, the receiver listens for connections by the sender and the
-sender connects to the receiver.
+library, the receiver listens for connections by the sender and the sender
+connects to the receiver.
 
 ```
-$ ./simple_receiver 127.0.0.1 5353
+$ ./receiver 127.0.0.1 5353
 socket
 bind
 listen
 accept
 receiving...
 ---- dnstap
-identity: simple_sender
+identity: sender
 version: 0.1.0
 message:
   type: MESSAGE
@@ -47,7 +43,7 @@ stopped
 ```
 
 ```
-$ ./simple_sender 127.0.0.1 5353
+$ ./sender 127.0.0.1 5353
 socket
 connect
 sending...
@@ -57,10 +53,10 @@ stopped
 
 ## daemon_sender_uv and client_receiver_uv
 
-These examples works in the reverse way compared to `simple_receiver` and
-`simple_sender`, and maybe a more traditional way, the daemon listens and
-accepts connections from new clients, and will continuously send messages to
-established clients that are ready to receive them.
+These examples works in the reverse way compared to `receiver` and `sender`,
+and maybe a more traditional way, the daemon listens and accepts connections
+from new clients, and will continuously send messages to established clients
+that are ready to receive them.
 
 ```
 $ ./daemon_sender_uv 127.0.0.1 5353

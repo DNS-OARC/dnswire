@@ -1,7 +1,3 @@
-read 240
-control type 2 len 34
-control_field type 1 len 22 data: protobuf:dnstap.Dnstap
-frame len 81
 ---- dnstap
 version: kdig 2.6.5
 message:
@@ -16,7 +12,6 @@ message:
   query_message_length: 28
   query_message: \x85 \x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x06google\x03com\x00\x00\x01\x00\x01
 ----
-frame len 97
 ---- dnstap
 version: kdig 2.6.5
 message:
@@ -31,4 +26,3 @@ message:
   response_message_length: 44
   response_message: \x85 \x81\x80\x00\x01\x00\x01\x00\x00\x00\x00\x06google\x03com\x00\x00\x01\x00\x01\xc0\x0c\x00\x01\x00\x01\x00\x00\x01,\x00\x04\xd8:\xd3\x0e
 ----
-stopped

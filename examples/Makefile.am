@@ -7,14 +7,13 @@ AM_CFLAGS = -I$(top_srcdir)/src \
   $(protobuf_c_CFLAGS)
 
 AM_LDFLAGS = $(protobuf_c_LIBS) \
-  $(tinyframe_LIBS)
+  $(tinyframe_LIBS) -static
 
 EXTRA_DIST = print_dnstap.c create_dnstap.c
 
 if BUILD_EXAMPLES
 
-noinst_PROGRAMS = reader writer sender receiver simple_reader simple_writer \
-  simple_sender simple_receiver simple_reader_sender
+noinst_PROGRAMS = reader writer sender receiver reader_sender
 
 reader_SOURCES = reader.c
 reader_LDADD = ../src/libdnswire.la
@@ -28,20 +27,8 @@ sender_LDADD = ../src/libdnswire.la
 receiver_SOURCES = receiver.c
 receiver_LDADD = ../src/libdnswire.la
 
-simple_reader_SOURCES = simple_reader.c
-simple_reader_LDADD = ../src/libdnswire.la
-
-simple_writer_SOURCES = simple_writer.c
-simple_writer_LDADD = ../src/libdnswire.la
-
-simple_sender_SOURCES = simple_sender.c
-simple_sender_LDADD = ../src/libdnswire.la
-
-simple_receiver_SOURCES = simple_receiver.c
-simple_receiver_LDADD = ../src/libdnswire.la
-
-simple_reader_sender_SOURCES = simple_reader_sender.c
-simple_reader_sender_LDADD = ../src/libdnswire.la
+reader_sender_SOURCES = reader_sender.c
+reader_sender_LDADD = ../src/libdnswire.la
 
 if HAVE_LIBUV
 

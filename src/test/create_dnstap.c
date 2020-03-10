@@ -6,7 +6,7 @@
 #include <arpa/inet.h>
 #include <time.h>
 
-static char dns_wire_format_placeholder[] = "dns_wire_format_placeholder";
+static char          dns_wire_format_placeholder[] = "dns_wire_format_placeholder";
 static unsigned char query_address[sizeof(struct in_addr)];
 static unsigned char response_address[sizeof(struct in_addr)];
 

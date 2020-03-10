@@ -1,5 +1,5 @@
 ---- dnstap
-identity: writer_pop-1
+identity: writer_reader_unixsock-1
 version: 0.1.0
 message:
   type: TOOL_QUERY
@@ -15,7 +15,7 @@ message:
   response_message: dns_wire_format_placeholder
 ----
 ---- dnstap
-identity: writer_pop-2
+identity: writer_reader_unixsock-2
 version: 0.1.0
 message:
   type: TOOL_QUERY

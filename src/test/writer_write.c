@@ -17,13 +17,13 @@ int main(int argc, const char* argv[])
         return 1;
     }
 
-    struct dnswire_writer writer = DNSWIRE_WRITER_INITIALIZER;
+    struct dnswire_writer writer;
     if (dnswire_writer_init(&writer) != dnswire_ok) {
         return 1;
     }
 
     struct dnstap d = DNSTAP_INITIALIZER;
-    create_dnstap(&d, "test4");
+    create_dnstap(&d, "writer_write-1");
 
     dnswire_writer_set_dnstap(writer, &d);
 
@@ -38,13 +38,13 @@ int main(int argc, const char* argv[])
             continue;
 
         default:
-            fprintf(stderr, "dnswire_reader_add() error\n");
+            fprintf(stderr, "dnswire_writer_fwrite() error\n");
             return 1;
         }
         break;
     }
 
-    create_dnstap(&d, "test4");
+    create_dnstap(&d, "writer_write-2");
 
     while (1) {
         enum dnswire_result res = dnswire_writer_fwrite(&writer, fp);
@@ -57,7 +57,7 @@ int main(int argc, const char* argv[])
             continue;
 
         default:
-            fprintf(stderr, "dnswire_reader_add() error\n");
+            fprintf(stderr, "dnswire_writer_fwrite() error\n");
             return 1;
         }
         break;
@@ -86,6 +86,7 @@ int main(int argc, const char* argv[])
         break;
     }
 
+    dnswire_writer_destroy(writer);
     fclose(fp);
     return 0;
 }

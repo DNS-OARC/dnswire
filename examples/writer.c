@@ -1,13 +1,10 @@
-#include <dnswire/dnstap.h>
-#include <tinyframe/tinyframe.h>
+#include <dnswire/writer.h>
 
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "create_dnstap.c"
-
-static char content_type[] = "protobuf:dnstap.Dnstap";
 
 int main(int argc, const char* argv[])
 {
@@ -27,84 +24,61 @@ int main(int argc, const char* argv[])
     }
 
     /*
+     * We first initialize the writer and check that it can allocate the
+     * buffers it needs.
+     */
+
+    struct dnswire_writer writer;
+
+    if (dnswire_writer_init(&writer) != dnswire_ok) {
+        fprintf(stderr, "Unable to initialize dnswire writer\n");
+        return 1;
+    }
+
+    /*
      * Now we create a DNSTAP message.
      */
 
     struct dnstap d = create_dnstap("writer");
 
     /*
-     * Now that the message is prepared we can begin encapsulating it in
-     * protobuf and Frame Streams.
-     *
-     * First we ask what the encoded size of the protobuf message would be
-     * to allocate a buffer for it, then we encode it.
+     * We set the DNSTAP message the writer should write.
      */
 
-    size_t  len = dnstap_encode_protobuf_size(&d);
-    uint8_t frame[len];
-    dnstap_encode_protobuf(&d, frame);
+    dnswire_writer_set_dnstap(writer, &d);
 
     /*
-     * Next we initialize a tinyframe writer to write out the Frame Streams.
+     * We now loop and wait for the DNSTAP message to be written.
      */
 
-    struct tinyframe_writer writer = TINYFRAME_WRITER_INITIALIZER;
+    int done = 0;
 
-    /*
-     * We create a buffer that holds the control frames and the data frame,
-     * tinyframe can indicate when it needs more buffer space but we skip
-     * that here to simplify the example.
-     */
-
-    uint8_t out[len + (TINYFRAME_CONTROL_FRAME_LENGTH_MAX * 3)];
-    len          = sizeof(out);
-    size_t wrote = 0;
-
-    /*
-     * First we write, to the buffer, a control start with a content type
-     * control field for the DNSTAP protobuf content type.
-     */
-
-    if (tinyframe_write_control_start(&writer, &out[wrote], len, content_type, sizeof(content_type) - 1) != tinyframe_ok) {
-        fprintf(stderr, "tinyframe_write_control_start() failed\n");
-        return 1;
+    while (!done) {
+        switch (dnswire_writer_fwrite(&writer, fp)) {
+        case dnswire_ok:
+            /*
+             * The DNSTAP message was written successfully, we can now set
+             * a new DNSTAP message for the writer or stop the stream.
+             *
+             * This stops the stream, loop again until it's stopped.
+             */
+            dnswire_writer_stop(&writer);
+            break;
+        case dnswire_again:
+            break;
+        case dnswire_endofdata:
+            /*
+             * The stream is stopped, we're done!
+             */
+            done = 1;
+            break;
+        default:
+            fprintf(stderr, "dnswire_writer_fwrite() error\n");
+            done = 1;
+        }
     }
-    wrote += writer.bytes_wrote;
-    len -= writer.bytes_wrote;
 
-    /*
-     * Then we write, to the buffer, a data frame with the encoded DNSTAP
-     * message.
-     */
-
-    if (tinyframe_write_frame(&writer, &out[wrote], len, frame, sizeof(frame)) != tinyframe_ok) {
-        fprintf(stderr, "tinyframe_write_frame() failed\n");
-        return 1;
-    }
-    wrote += writer.bytes_wrote;
-    len -= writer.bytes_wrote;
-
-    /*
-     * Lastly we write, to the buffer, a control stop to indicate the end.
-     */
-
-    if (tinyframe_write_control_stop(&writer, &out[wrote], len) != tinyframe_ok) {
-        fprintf(stderr, "tinyframe_write_control_stop() failed\n");
-        return 1;
-    }
-    wrote += writer.bytes_wrote;
-    len -= writer.bytes_wrote;
-
-    /*
-     * Now we write the buffer to the file we opened previously.
-     */
-
-    if (fwrite(out, 1, wrote, fp) != wrote) {
-        fprintf(stderr, "fwrite() failed\n");
-        return 1;
-    }
-    printf("wrote %zu bytes\n", wrote);
-
+    dnswire_writer_destroy(writer);
     fclose(fp);
     return 0;
 }

@@ -11,13 +11,13 @@ AM_CFLAGS = $(tinyframe_CFLAGS) \
 lib_LTLIBRARIES = libdnswire.la
 
 libdnswire_la_SOURCES = decoder.c dnstap.c dnswire.c encoder.c reader.c \
-  writer.c
+  writer.c trace.c
 nodist_libdnswire_la_SOURCES = dnstap.pb-c.c
 BUILT_SOURCES += dnswire/dnstap.pb-c.h
 nobase_include_HEADERS = dnswire/decoder.h dnswire/dnstap.h \
   dnswire/dnswire.h dnswire/encoder.h dnswire/reader.h dnswire/writer.h
 nobase_nodist_include_HEADERS = dnswire/version.h dnswire/dnstap.pb-c.h \
-  dnswire/dnstap-macros.h
+  dnswire/dnstap-macros.h dnswire/trace.h
 libdnswire_la_LDFLAGS = -version-info $(DNSWIRE_LIBRARY_VERSION) \
   $(protobuf_c_LIBS) \
   $(tinyframe_LIBS)

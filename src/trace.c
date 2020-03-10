@@ -21,14 +21,32 @@
 
 #include "config.h"
 
-#include "dnswire/dnswire.h"
+#include "dnswire/trace.h"
 
-const char* const dnswire_result_string[] = {
-    "ok",
-    "error",
-    "again",
-    "need_more",
-    "have_dnstap",
-    "endofdata",
-    "bidirectional",
-};
+#if DNSWIRE_TRACE
+const char* __printable_string(const uint8_t* data, size_t len)
+{
+    static char buf[512];
+    size_t      r = 0, w = 0;
+
+    while (r < len && w < sizeof(buf) - 1) {
+        if (isprint(data[r])) {
+            buf[w++] = data[r++];
+        } else {
+            if (w + 4 >= sizeof(buf) - 1) {
+                break;
+            }
+
+            sprintf(&buf[w], "\\x%02x", data[r++]);
+            w += 4;
+        }
+    }
+    if (w >= sizeof(buf)) {
+        buf[sizeof(buf) - 1] = 0;
+    } else {
+        buf[w] = 0;
+    }
+
+    return buf;
+}
+#endif
