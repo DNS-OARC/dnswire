@@ -5,6 +5,9 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 static char          dns_wire_format_placeholder[] = "dns_wire_format_placeholder";
 static unsigned char query_address[sizeof(struct in_addr)];

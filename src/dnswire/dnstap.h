@@ -85,59 +85,59 @@ struct dnstap {
 
 #include <dnswire/dnstap-macros.h>
 #define dnstap_type(d) (enum dnstap_type)((d).dnstap.type)
-#define dnstap_set_type(d, v)                     \
-    switch (v) {                                  \
-    case DNSTAP_TYPE_MESSAGE:                     \
-        (d).dnstap.type    = v;                   \
-        (d).dnstap.message = &(d).message;        \
-        break;                                    \
-    default:                                      \
-        (d).dnstap.type    = DNSTAP_TYPE_UNKNOWN; \
-        (d).dnstap.message = 0;                   \
+#define dnstap_set_type(d, v)                                                 \
+    switch (v) {                                                              \
+    case DNSTAP_TYPE_MESSAGE:                                                 \
+        (d).dnstap.type    = (enum _Dnstap__Dnstap__Type)v;                   \
+        (d).dnstap.message = &(d).message;                                    \
+        break;                                                                \
+    default:                                                                  \
+        (d).dnstap.type    = (enum _Dnstap__Dnstap__Type)DNSTAP_TYPE_UNKNOWN; \
+        (d).dnstap.message = 0;                                               \
     }
 #define dnstap_has_message(d) ((d).dnstap.message != 0)
 
 #define dnstap_message_type(d) (enum dnstap_message_type)((d).message.type)
-#define dnstap_message_set_type(d, v)                   \
-    switch (v) {                                        \
-    case DNSTAP_MESSAGE_TYPE_AUTH_QUERY:                \
-    case DNSTAP_MESSAGE_TYPE_AUTH_RESPONSE:             \
-    case DNSTAP_MESSAGE_TYPE_RESOLVER_QUERY:            \
-    case DNSTAP_MESSAGE_TYPE_RESOLVER_RESPONSE:         \
-    case DNSTAP_MESSAGE_TYPE_CLIENT_QUERY:              \
-    case DNSTAP_MESSAGE_TYPE_CLIENT_RESPONSE:           \
-    case DNSTAP_MESSAGE_TYPE_FORWARDER_QUERY:           \
-    case DNSTAP_MESSAGE_TYPE_FORWARDER_RESPONSE:        \
-    case DNSTAP_MESSAGE_TYPE_STUB_QUERY:                \
-    case DNSTAP_MESSAGE_TYPE_STUB_RESPONSE:             \
-    case DNSTAP_MESSAGE_TYPE_TOOL_QUERY:                \
-    case DNSTAP_MESSAGE_TYPE_TOOL_RESPONSE:             \
-        (d).message.type = v;                           \
-        break;                                          \
-    default:                                            \
-        (d).message.type = DNSTAP_MESSAGE_TYPE_UNKNOWN; \
+#define dnstap_message_set_type(d, v)                                                \
+    switch (v) {                                                                     \
+    case DNSTAP_MESSAGE_TYPE_AUTH_QUERY:                                             \
+    case DNSTAP_MESSAGE_TYPE_AUTH_RESPONSE:                                          \
+    case DNSTAP_MESSAGE_TYPE_RESOLVER_QUERY:                                         \
+    case DNSTAP_MESSAGE_TYPE_RESOLVER_RESPONSE:                                      \
+    case DNSTAP_MESSAGE_TYPE_CLIENT_QUERY:                                           \
+    case DNSTAP_MESSAGE_TYPE_CLIENT_RESPONSE:                                        \
+    case DNSTAP_MESSAGE_TYPE_FORWARDER_QUERY:                                        \
+    case DNSTAP_MESSAGE_TYPE_FORWARDER_RESPONSE:                                     \
+    case DNSTAP_MESSAGE_TYPE_STUB_QUERY:                                             \
+    case DNSTAP_MESSAGE_TYPE_STUB_RESPONSE:                                          \
+    case DNSTAP_MESSAGE_TYPE_TOOL_QUERY:                                             \
+    case DNSTAP_MESSAGE_TYPE_TOOL_RESPONSE:                                          \
+        (d).message.type = (enum _Dnstap__Message__Type)v;                           \
+        break;                                                                       \
+    default:                                                                         \
+        (d).message.type = (enum _Dnstap__Message__Type)DNSTAP_MESSAGE_TYPE_UNKNOWN; \
     }
-#define dnstap_message_set_socket_family(d, v)                       \
-    switch (v) {                                                     \
-    case DNSTAP_SOCKET_FAMILY_INET:                                  \
-    case DNSTAP_SOCKET_FAMILY_INET6:                                 \
-        (d).message.has_socket_family = true;                        \
-        (d).message.socket_family     = v;                           \
-        break;                                                       \
-    default:                                                         \
-        (d).message.has_socket_family = false;                       \
-        (d).message.socket_family     = DNSTAP_MESSAGE_TYPE_UNKNOWN; \
+#define dnstap_message_set_socket_family(d, v)                                                   \
+    switch (v) {                                                                                 \
+    case DNSTAP_SOCKET_FAMILY_INET:                                                              \
+    case DNSTAP_SOCKET_FAMILY_INET6:                                                             \
+        (d).message.has_socket_family = true;                                                    \
+        (d).message.socket_family     = (enum _Dnstap__SocketFamily)v;                           \
+        break;                                                                                   \
+    default:                                                                                     \
+        (d).message.has_socket_family = false;                                                   \
+        (d).message.socket_family     = (enum _Dnstap__SocketFamily)DNSTAP_MESSAGE_TYPE_UNKNOWN; \
     }
-#define dnstap_message_set_socket_protocol(d, v)                       \
-    switch (v) {                                                       \
-    case DNSTAP_SOCKET_PROTOCOL_UDP:                                   \
-    case DNSTAP_SOCKET_PROTOCOL_TCP:                                   \
-        (d).message.has_socket_protocol = true;                        \
-        (d).message.socket_protocol     = v;                           \
-        break;                                                         \
-    default:                                                           \
-        (d).message.has_socket_protocol = false;                       \
-        (d).message.socket_protocol     = DNSTAP_MESSAGE_TYPE_UNKNOWN; \
+#define dnstap_message_set_socket_protocol(d, v)                                                     \
+    switch (v) {                                                                                     \
+    case DNSTAP_SOCKET_PROTOCOL_UDP:                                                                 \
+    case DNSTAP_SOCKET_PROTOCOL_TCP:                                                                 \
+        (d).message.has_socket_protocol = true;                                                      \
+        (d).message.socket_protocol     = (enum _Dnstap__SocketProtocol)v;                           \
+        break;                                                                                       \
+    default:                                                                                         \
+        (d).message.has_socket_protocol = false;                                                     \
+        (d).message.socket_protocol     = (enum _Dnstap__SocketProtocol)DNSTAP_MESSAGE_TYPE_UNKNOWN; \
     }
 
 int dnstap_decode_protobuf(struct dnstap*, const uint8_t*, size_t);

@@ -325,6 +325,7 @@ enum dnswire_result dnswire_reader_push(struct dnswire_reader* handle, const uin
 
     case dnswire_reader_writing_accept:
         // if what we have left to write is less then the space available, we write it all
+        assert(out_len);
         *out_len = handle->write_left < out_len_orig ? handle->write_left : out_len_orig;
         memcpy(out_data, &handle->write_buf[handle->write_at - handle->write_left], *out_len);
         __trace("pushed %zu", *out_len);
@@ -427,6 +428,7 @@ enum dnswire_result dnswire_reader_push(struct dnswire_reader* handle, const uin
 
     case dnswire_reader_writing_finish:
         // if what we have left to write is less then the space available, we write it all
+        assert(out_len);
         *out_len = handle->write_left < out_len_orig ? handle->write_left : out_len_orig;
         memcpy(out_data, &handle->write_buf[handle->write_at - handle->write_left], *out_len);
         __trace("pushed %zu", *out_len);

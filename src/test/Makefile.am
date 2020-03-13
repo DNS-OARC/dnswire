@@ -9,7 +9,7 @@ AM_CFLAGS = -I$(top_srcdir)/src \
   $(protobuf_c_CFLAGS)
 
 check_PROGRAMS = reader_read reader_push writer_write writer_pop \
-  writer_reader_unixsock
+  reader_unixsock writer_unixsock
 TESTS = test1.sh test2.sh test3.sh test4.sh test5.sh
 EXTRA_DIST = create_dnstap.c print_dnstap.c $(TESTS) test.dnstap \
   test1.gold test2.gold test3.gold test4.gold test5.gold
@@ -30,6 +30,10 @@ writer_pop_SOURCES = writer_pop.c
 writer_pop_LDADD = ../libdnswire.la
 writer_pop_LDFLAGS = $(protobuf_c_LIBS) $(tinyframe_LIBS) -static
 
-writer_reader_unixsock_SOURCES = writer_reader_unixsock.c
-writer_reader_unixsock_LDADD = ../libdnswire.la
-writer_reader_unixsock_LDFLAGS = $(protobuf_c_LIBS) $(tinyframe_LIBS) -static
+reader_unixsock_SOURCES = reader_unixsock.c
+reader_unixsock_LDADD = ../libdnswire.la
+reader_unixsock_LDFLAGS = $(protobuf_c_LIBS) $(tinyframe_LIBS) -static
+
+writer_unixsock_SOURCES = writer_unixsock.c
+writer_unixsock_LDADD = ../libdnswire.la
+writer_unixsock_LDFLAGS = $(protobuf_c_LIBS) $(tinyframe_LIBS) -static

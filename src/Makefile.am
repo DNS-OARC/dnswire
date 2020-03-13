@@ -30,12 +30,12 @@ dnswire/dnstap.pb-c.h: dnstap.pb-c.c
 	cp dnstap.pb-c.h dnswire/
 
 dnstap.pb-c.c: dnstap.pb/dnstap.proto
-	$(AM_V_GEN)@PROTOC_C@ "--c_out=." -I$(srcdir)/dnstap.pb $<
+	$(AM_V_GEN)@PROTOC_C@ "--c_out=." -I$(srcdir)/dnstap.pb "$(srcdir)/dnstap.pb/dnstap.proto"
 
 BUILT_SOURCES += dnswire/dnstap-macros.h
 EXTRA_DIST += gen-macros.sh dnstap.fields
 
 dnswire/dnstap-macros.h: dnstap.fields gen-macros.sh
-	$(AM_V_GEN)"$(srcdir)/gen-macros.sh" $< >$@
+	$(AM_V_GEN)"$(srcdir)/gen-macros.sh" "$(srcdir)/dnstap.fields" >dnswire/dnstap-macros.h
 
 CLEANFILES += $(BUILT_SOURCES)
