@@ -4,6 +4,9 @@
 #include <inttypes.h>
 #include <arpa/inet.h>
 #include <ctype.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 static const char* printable_string(const uint8_t* data, size_t len)
 {

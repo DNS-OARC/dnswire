@@ -6,6 +6,9 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 /*
  * This is a combination of reader and simpler_sender, comments may
