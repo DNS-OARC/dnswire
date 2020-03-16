@@ -40,14 +40,24 @@ AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=CFLAGS], [Add
 # Check --enable-trace
 #AH_TEMPLATE([DNSWIRE_TRACE], [Defined if tracing processing is enabled])
 AC_SUBST([DNSWIRE_TRACE], [0])
-AC_ARG_ENABLE([trace], [AS_HELP_STRING([--enable-trace], [Enable trace output of processing])], [AC_SUBST([DNSWIRE_TRACE], [1])])
+AC_ARG_ENABLE([trace],
+[AS_HELP_STRING([--enable-trace], [Enable trace output of processing])],
+[
+  AC_MSG_NOTICE([WARNING: tracing of library enabled, expect excessive output to STDERR!])
+  AC_SUBST([DNSWIRE_TRACE], [1])
+])
 
 # Check --disable-examples
 AC_ARG_ENABLE([examples], [AS_HELP_STRING([--disable-examples], [do not build examples])], [
-AC_MSG_NOTICE([examples ${enableval}])
 case "${enableval}" in
-  yes) build_examples=true ;;
-  no)  build_examples=false ;;
+  yes)
+    build_examples=true
+    AC_MSG_NOTICE([Building examples])
+    ;;
+  no)
+    build_examples=false
+    AC_MSG_NOTICE([Not building examples])
+    ;;
   *) AC_MSG_ERROR([bad value ${enableval} for --enable-examples]) ;;
 esac], [build_examples=true])
 AM_CONDITIONAL([BUILD_EXAMPLES], [test x$build_examples = xtrue])
@@ -56,9 +66,12 @@ AM_CONDITIONAL([BUILD_EXAMPLES], [test x$build_examples = xtrue])
 PKG_INSTALLDIR
 
 # Checks for libraries.
-PKG_CHECK_MODULES([tinyframe], [libtinyframe >= 0.1.0], , [AC_MSG_ERROR([libtinyframe not found])])
-PKG_CHECK_MODULES([protobuf_c], [libprotobuf-c >= 1.0.1], , [AC_MSG_ERROR([libprotobuf-c not found])])
-PKG_CHECK_MODULES([uv], [libuv], [have_libuv=true])
+PKG_CHECK_MODULES([tinyframe], [libtinyframe >= 0.1.0])
+PKG_CHECK_MODULES([protobuf_c], [libprotobuf-c >= 1.0.1])
+have_libuv=false
+AS_IF([test x$build_examples = xtrue], [
+  PKG_CHECK_MODULES([uv], [libuv], [have_libuv=true], [])
+])
 AM_CONDITIONAL([HAVE_LIBUV], [test x$have_libuv = xtrue])
 
 # Checks for header files.
