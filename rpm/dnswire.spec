@@ -17,6 +17,8 @@ BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  tinyframe-devel
+BuildRequires:  protobuf-c-compiler
+BuildRequires:  protobuf-c-devel
 
 %description
 A C library for encoding/decoding different DNS encapsulations and
