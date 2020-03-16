@@ -1,9 +1,12 @@
-# library for DNS encapsulations
+# library for DNS encapsulations and transporting of them
 
 **Currently Work in Progress!**
 
-A C library that can read and write different types of DNS and DNS transport
-encapsulations.
+A C library for encoding/decoding different DNS encapsulations and
+transporting them over different protocols.
+
+Supported encapsulations:
+- [DNSTAP](http://dnstap.info) using Protobuf
 
 Currently supports:
-- [DNSTAP](http://dnstap.info) over Frame Streams using [tinyframe](https://github.com/DNS-OARC/tinyframe)
+- Frame Streams using [tinyframe](https://github.com/DNS-OARC/tinyframe)
