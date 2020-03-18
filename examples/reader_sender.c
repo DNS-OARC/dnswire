@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/un.h>
 
 /*
  * This is a combination of reader and simpler_sender, comments may
@@ -17,8 +18,8 @@
 
 int main(int argc, const char* argv[])
 {
-    if (argc < 4) {
-        fprintf(stderr, "usage: reader_sender <file> <IP> <port>\n");
+    if (argc < 3) {
+        fprintf(stderr, "usage: reader_sender <file> [ <IP> <port> | <unix socket path> ]\n");
         return 1;
     }
 
@@ -58,41 +59,77 @@ int main(int argc, const char* argv[])
     }
 
     /*
-     * We setup and connect to the IP and port given on command line.
+     * Use bidirectional communication over the TCP or UNIX socket.
      */
+    if (dnswire_writer_set_bidirectional(&writer, true) != dnswire_ok) {
+        fprintf(stderr, "Unable to set dnswire writer to bidirectional mode\n");
+        return 1;
+    }
 
-    struct sockaddr_storage addr_store;
-    struct sockaddr_in*     addr = (struct sockaddr_in*)&addr_store;
-    socklen_t               addrlen;
+    int sockfd;
 
-    if (strchr(argv[2], ':')) {
-        addr->sin_family = AF_INET6;
-        addrlen          = sizeof(struct sockaddr_in6);
+    if (argc == 3) {
+        /*
+         * We setup and connect to a unix socket at the given path on command line.
+         */
+
+        struct sockaddr_un path;
+
+        memset(&path, 0, sizeof(struct sockaddr_un));
+        path.sun_family = AF_UNIX;
+        strncpy(path.sun_path, argv[2], sizeof(path.sun_path) - 1);
+
+        sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+        if (sockfd == -1) {
+            fprintf(stderr, "socket() failed: %s\n", strerror(errno));
+            return 1;
+        }
+        printf("socket\n");
+
+        if (connect(sockfd, (struct sockaddr*)&path, sizeof(struct sockaddr_un))) {
+            fprintf(stderr, "connect() failed: %s\n", strerror(errno));
+            close(sockfd);
+            return 1;
+        }
+        printf("connect\n");
     } else {
-        addr->sin_family = AF_INET;
-        addrlen          = sizeof(struct sockaddr_in);
-    }
+        /*
+         * We setup and connect to the IP and port given on command line.
+         */
 
-    if (inet_pton(addr->sin_family, argv[2], &addr->sin_addr) != 1) {
-        fprintf(stderr, "inet_pton(%s) failed: %s\n", argv[2], strerror(errno));
-        return 1;
-    }
+        struct sockaddr_storage addr_store;
+        struct sockaddr_in*     addr = (struct sockaddr_in*)&addr_store;
+        socklen_t               addrlen;
 
-    addr->sin_port = ntohs(atoi(argv[3]));
+        if (strchr(argv[2], ':')) {
+            addr->sin_family = AF_INET6;
+            addrlen          = sizeof(struct sockaddr_in6);
+        } else {
+            addr->sin_family = AF_INET;
+            addrlen          = sizeof(struct sockaddr_in);
+        }
 
-    int sockfd = socket(addr->sin_family, SOCK_STREAM, IPPROTO_TCP);
-    if (sockfd == -1) {
-        fprintf(stderr, "socket() failed: %s\n", strerror(errno));
-        return 1;
-    }
-    printf("socket\n");
+        if (inet_pton(addr->sin_family, argv[2], &addr->sin_addr) != 1) {
+            fprintf(stderr, "inet_pton(%s) failed: %s\n", argv[2], strerror(errno));
+            return 1;
+        }
 
-    if (connect(sockfd, (struct sockaddr*)addr, addrlen)) {
-        fprintf(stderr, "connect() failed: %s\n", strerror(errno));
-        close(sockfd);
-        return 1;
+        addr->sin_port = ntohs(atoi(argv[3]));
+
+        sockfd = socket(addr->sin_family, SOCK_STREAM, IPPROTO_TCP);
+        if (sockfd == -1) {
+            fprintf(stderr, "socket() failed: %s\n", strerror(errno));
+            return 1;
+        }
+        printf("socket\n");
+
+        if (connect(sockfd, (struct sockaddr*)addr, addrlen)) {
+            fprintf(stderr, "connect() failed: %s\n", strerror(errno));
+            close(sockfd);
+            return 1;
+        }
+        printf("connect\n");
     }
-    printf("connect\n");
 
     /*
      * We now loop until we have a DNSTAP message, the stream was stopped
@@ -119,6 +156,14 @@ int main(int argc, const char* argv[])
                     done2 = 1;
                     break;
                 case dnswire_again:
+                    break;
+                case dnswire_endofdata:
+                    /*
+                     * The stream is stopped...
+                     */
+                    printf("prematurely stopped\n");
+                    done  = 1;
+                    done2 = 2;
                     break;
                 default:
                     fprintf(stderr, "dnswire_writer_write() error\n");
