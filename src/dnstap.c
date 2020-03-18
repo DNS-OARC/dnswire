@@ -64,8 +64,52 @@ int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t le
     }
 
     dnstap->dnstap = *dnstap->unpacked_dnstap;
+
+    switch (dnstap->dnstap.type) {
+    case DNSTAP_TYPE_MESSAGE:
+        break;
+    default:
+        dnstap->dnstap.type = (enum _Dnstap__Dnstap__Type)DNSTAP_TYPE_UNKNOWN;
+    }
+
     if (dnstap->dnstap.message) {
         dnstap->message = *dnstap->dnstap.message;
+
+        switch (dnstap->message.type) {
+        case DNSTAP_MESSAGE_TYPE_AUTH_QUERY:
+        case DNSTAP_MESSAGE_TYPE_AUTH_RESPONSE:
+        case DNSTAP_MESSAGE_TYPE_RESOLVER_QUERY:
+        case DNSTAP_MESSAGE_TYPE_RESOLVER_RESPONSE:
+        case DNSTAP_MESSAGE_TYPE_CLIENT_QUERY:
+        case DNSTAP_MESSAGE_TYPE_CLIENT_RESPONSE:
+        case DNSTAP_MESSAGE_TYPE_FORWARDER_QUERY:
+        case DNSTAP_MESSAGE_TYPE_FORWARDER_RESPONSE:
+        case DNSTAP_MESSAGE_TYPE_STUB_QUERY:
+        case DNSTAP_MESSAGE_TYPE_STUB_RESPONSE:
+        case DNSTAP_MESSAGE_TYPE_TOOL_QUERY:
+        case DNSTAP_MESSAGE_TYPE_TOOL_RESPONSE:
+            break;
+        default:
+            dnstap->message.type = (enum _Dnstap__Message__Type)DNSTAP_MESSAGE_TYPE_UNKNOWN;
+        }
+
+        switch (dnstap->message.socket_family) {
+        case DNSTAP_SOCKET_FAMILY_INET:
+        case DNSTAP_SOCKET_FAMILY_INET6:
+            break;
+        default:
+            dnstap->message.has_socket_family = false;
+            dnstap->message.socket_family     = (enum _Dnstap__SocketFamily)DNSTAP_MESSAGE_TYPE_UNKNOWN;
+        }
+
+        switch (dnstap->message.socket_protocol) {
+        case DNSTAP_SOCKET_PROTOCOL_UDP:
+        case DNSTAP_SOCKET_PROTOCOL_TCP:
+            break;
+        default:
+            dnstap->message.has_socket_protocol = false;
+            dnstap->message.socket_protocol     = (enum _Dnstap__SocketProtocol)DNSTAP_MESSAGE_TYPE_UNKNOWN;
+        }
     }
 
     return 0;
