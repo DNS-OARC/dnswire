@@ -88,14 +88,18 @@ enum dnswire_result dnswire_writer_set_bidirectional(struct dnswire_writer* hand
 {
     assert(handle);
 
-    if (bidirectional && !handle->read_buf) {
-        if (!(handle->read_buf = malloc(handle->read_size))) {
-            return dnswire_error;
+    if (bidirectional) {
+        if (!handle->read_buf) {
+            if (!(handle->read_buf = malloc(handle->read_size))) {
+                return dnswire_error;
+            }
         }
 
         handle->encoder.state = dnswire_encoder_control_ready;
-        // handle->decoder.state = dnswire_decoder_checking_accept;
         __state(handle, dnswire_writer_encoding_ready);
+    } else {
+        handle->encoder.state = dnswire_encoder_control_start;
+        __state(handle, dnswire_writer_encoding);
     }
 
     handle->bidirectional = bidirectional;
