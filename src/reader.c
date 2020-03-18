@@ -84,12 +84,16 @@ enum dnswire_result dnswire_reader_allow_bidirectional(struct dnswire_reader* ha
 {
     assert(handle);
 
-    if (allow_bidirectional && !handle->write_buf) {
-        if (!(handle->write_buf = malloc(handle->write_size))) {
-            return dnswire_error;
+    if (allow_bidirectional) {
+        if (!handle->write_buf) {
+            if (!(handle->write_buf = malloc(handle->write_size))) {
+                return dnswire_error;
+            }
         }
 
         handle->encoder.state = dnswire_encoder_control_accept;
+    } else {
+        handle->encoder.state = dnswire_encoder_control_start;
     }
 
     handle->allow_bidirectional = allow_bidirectional;
