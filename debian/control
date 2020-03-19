@@ -19,7 +19,7 @@ Description: library for DNS encapsulations and transporting of them
 
 Package: libdnswire-dev
 Architecture: any
-Depends: libdnswire0, libtinyframe-dev, ${misc:Depends}
+Depends: libdnswire0, libtinyframe-dev, libprotobuf-c-dev, ${misc:Depends}
 Description: library for DNS encapsulations and transporting of them - development files
  A C library for encoding/decoding different DNS encapsulations and
  transporting them over different protocols.
