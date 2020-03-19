@@ -1,0 +1,32 @@
+---- dnstap
+identity: writer_reader_unixsock-1
+version: 0.1.0
+message:
+  type: TOOL_QUERY
+  socket_family: INET
+  socket_protocol: UDP
+  query_address: 127.0.0.1
+  query_port: 12345
+  response_address: 127.0.0.1
+  response_port: 53
+  query_message_length: 27
+  query_message: dns_wire_format_placeholder
+  response_message_length: 27
+  response_message: dns_wire_format_placeholder
+----
+---- dnstap
+identity: writer_reader_unixsock-2
+version: 0.1.0
+message:
+  type: TOOL_QUERY
+  socket_family: INET
+  socket_protocol: UDP
+  query_address: 127.0.0.1
+  query_port: 12345
+  response_address: 127.0.0.1
+  response_port: 53
+  query_message_length: 27
+  query_message: dns_wire_format_placeholder
+  response_message_length: 27
+  response_message: dns_wire_format_placeholder
+----

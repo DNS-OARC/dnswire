@@ -1,0 +1,28 @@
+---- dnstap
+version: kdig 2.6.5
+message:
+  type: TOOL_QUERY
+  query_time: 1573730567.83350
+  socket_family: INET
+  socket_protocol: UDP
+  query_address: 0.0.0.0
+  query_port: 60417
+  response_address: 172.17.0.1
+  response_port: 53
+  query_message_length: 28
+  query_message: \x85 \x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x06google\x03com\x00\x00\x01\x00\x01
+----
+---- dnstap
+version: kdig 2.6.5
+message:
+  type: TOOL_RESPONSE
+  response_time: 1573730567.65816434
+  socket_family: INET
+  socket_protocol: UDP
+  query_address: 0.0.0.0
+  query_port: 60417
+  response_address: 172.17.0.1
+  response_port: 53
+  response_message_length: 44
+  response_message: \x85 \x81\x80\x00\x01\x00\x01\x00\x00\x00\x00\x06google\x03com\x00\x00\x01\x00\x01\xc0\x0c\x00\x01\x00\x01\x00\x00\x01,\x00\x04\xd8:\xd3\x0e
+----
