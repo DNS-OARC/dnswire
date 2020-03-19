@@ -91,5 +91,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Mon Mar 16 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.1.0-1
+* Thu Mar 19 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.1.0-1
 - Release 0.1.0
