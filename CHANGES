@@ -1,3 +1,11 @@
+2020-03-20 Jerry Lundström
+
+    Release v0.1.1
+
+    - Fix RPM devel package dependencies
+
+    b451169 package
+
 2020-03-19 Jerry Lundström
 
     First release v0.1.0
