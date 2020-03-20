@@ -41,6 +41,12 @@ transporting them over different protocols.
 Summary:        library for DNS encapsulations and transporting of them - development files
 Group:          Development/Libraries/C and C++
 Requires:       %{libname} = %{version}
+Requires:       tinyframe-devel
+%if 0%{?suse_version} || 0%{?sle_version}
+Requires:       libprotobuf-c-devel
+%else
+Requires:       protobuf-c-devel
+%endif
 
 %description devel
 A C library for encoding/decoding different DNS encapsulations and
