@@ -1,6 +1,5 @@
 ---- dnstap
 identity: writer_pop-1
-version: 0.1.0
 message:
   type: TOOL_QUERY
   socket_family: INET
@@ -16,7 +15,6 @@ message:
 ----
 ---- dnstap
 identity: writer_pop-2
-version: 0.1.0
 message:
   type: TOOL_QUERY
   socket_family: INET

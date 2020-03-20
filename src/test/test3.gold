@@ -1,7 +1,6 @@
 read 322
 ---- dnstap
 identity: writer_write-1
-version: 0.1.0
 message:
   type: TOOL_QUERY
   socket_family: INET
@@ -17,7 +16,6 @@ message:
 ----
 ---- dnstap
 identity: writer_write-2
-version: 0.1.0
 message:
   type: TOOL_QUERY
   socket_family: INET
