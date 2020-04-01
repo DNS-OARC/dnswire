@@ -1,0 +1,24 @@
+extraction:
+  cpp:
+    prepare:
+      packages:
+        - build-essential
+        - automake
+        - autoconf
+        - libtool
+        - pkg-config
+        - protobuf-c-compiler
+        - libprotobuf-c-dev
+    after_prepare:
+      - git clone https://github.com/DNS-OARC/tinyframe.git
+      - cd tinyframe
+      - ./autogen.sh
+      - ./configure --prefix="$PWD/../root"
+      - make
+      - make install
+      - cd ..
+      - export PKG_CONFIG_PATH="$PWD/root/lib/pkgconfig"
+    configure:
+      command:
+        - ./autogen.sh
+        - ./configure --disable-examples
