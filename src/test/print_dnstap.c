@@ -10,7 +10,7 @@
 
 static const char* printable_string(const uint8_t* data, size_t len)
 {
-    static char buf[512];
+    static char buf[512], hex;
     size_t      r = 0, w = 0;
 
     while (r < len && w < sizeof(buf) - 1) {
@@ -21,8 +21,20 @@ static const char* printable_string(const uint8_t* data, size_t len)
                 break;
             }
 
-            sprintf(&buf[w], "\\x%02x", data[r++]);
-            w += 4;
+            buf[w++] = '\\';
+            buf[w++] = 'x';
+            hex      = (data[r] & 0xf0) >> 4;
+            if (hex > 9) {
+                buf[w++] = 'a' + (hex - 10);
+            } else {
+                buf[w++] = '0' + hex;
+            }
+            hex = data[r++] & 0xf;
+            if (hex > 9) {
+                buf[w++] = 'a' + (hex - 10);
+            } else {
+                buf[w++] = '0' + hex;
+            }
         }
     }
     if (w >= sizeof(buf)) {
