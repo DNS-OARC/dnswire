@@ -104,11 +104,11 @@ static void print_dnstap(const struct dnstap* d)
             printf("  query_zone: %s\n", printable_string(dnstap_message_query_zone(*d), dnstap_message_query_zone_length(*d)));
         }
         if (dnstap_message_has_query_message(*d)) {
-            printf("  query_message_length: %lu\n", dnstap_message_query_message_length(*d));
+            printf("  query_message_length: %zu\n", dnstap_message_query_message_length(*d));
             printf("  query_message: %s\n", printable_string(dnstap_message_query_message(*d), dnstap_message_query_message_length(*d)));
         }
         if (dnstap_message_has_response_message(*d)) {
-            printf("  response_message_length: %lu\n", dnstap_message_response_message_length(*d));
+            printf("  response_message_length: %zu\n", dnstap_message_response_message_length(*d));
             printf("  response_message: %s\n", printable_string(dnstap_message_response_message(*d), dnstap_message_response_message_length(*d)));
         }
     }
