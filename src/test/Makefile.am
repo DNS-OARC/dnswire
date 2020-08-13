@@ -2,7 +2,7 @@
 
 CLEANFILES = test*.log test*.trs \
   test1.out test2.out test3.out test3.dnstap test4.out test4.dnstap \
-  test5.out test5.sock
+  test5.out test5.sock *.gcda *.gcno *.gcov
 
 AM_CFLAGS = -I$(top_srcdir)/src \
   $(tinyframe_CFLAGS) \
@@ -37,3 +37,12 @@ reader_unixsock_LDFLAGS = $(protobuf_c_LIBS) $(tinyframe_LIBS) -static
 writer_unixsock_SOURCES = writer_unixsock.c
 writer_unixsock_LDADD = ../libdnswire.la
 writer_unixsock_LDFLAGS = $(protobuf_c_LIBS) $(tinyframe_LIBS) -static
+
+if ENABLE_GCOV
+gcov-local:
+	for src in $(reader_read_SOURCES) $(reader_push_SOURCES) \
+$(writer_write_SOURCES) $(writer_pop_SOURCES) \
+$(reader_unixsock_SOURCES) $(writer_unixsock_SOURCES); do \
+	  gcov -l -r -s "$(srcdir)" "$$src"; \
+	done
+endif
