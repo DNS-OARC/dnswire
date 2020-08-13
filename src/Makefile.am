@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
 BUILT_SOURCES =
-CLEANFILES =
+CLEANFILES = *.gcda *.gcno *.gcov
 EXTRA_DIST =
 
 SUBDIRS = test
@@ -39,3 +39,10 @@ dnswire/dnstap-macros.h: dnstap.fields gen-macros.sh
 	$(AM_V_GEN)"$(srcdir)/gen-macros.sh" "$(srcdir)/dnstap.fields" >dnswire/dnstap-macros.h
 
 CLEANFILES += $(BUILT_SOURCES)
+
+if ENABLE_GCOV
+gcov-local:
+	for src in $(libdnswire_la_SOURCES); do \
+	  gcov -l -r -s "$(srcdir)" "$$src"; \
+	done
+endif
