@@ -228,7 +228,7 @@ enum dnswire_result dnswire_reader_push(struct dnswire_reader* handle, const uin
             handle->left += handle->pushed;
         }
         __state(handle, dnswire_reader_decoding_control);
-    // fallthrough
+        // fallthrough
 
     case dnswire_reader_decoding_control:
         switch (dnswire_decoder_decode(&handle->decoder, &handle->buf[handle->at], handle->left)) {
@@ -321,7 +321,7 @@ enum dnswire_result dnswire_reader_push(struct dnswire_reader* handle, const uin
         case dnswire_again:
             __state(handle, dnswire_reader_writing_accept);
             break;
-        // fallthrough
+            // fallthrough
 
         default:
             return dnswire_error;
@@ -354,7 +354,7 @@ enum dnswire_result dnswire_reader_push(struct dnswire_reader* handle, const uin
             handle->left += handle->pushed;
         }
         __state(handle, dnswire_reader_decoding);
-    // fallthrough
+        // fallthrough
 
     case dnswire_reader_decoding:
         switch (dnswire_decoder_decode(&handle->decoder, &handle->buf[handle->at], handle->left)) {
@@ -424,7 +424,7 @@ enum dnswire_result dnswire_reader_push(struct dnswire_reader* handle, const uin
         case dnswire_endofdata:
             __state(handle, dnswire_reader_writing_finish);
             break;
-        // fallthrough
+            // fallthrough
 
         default:
             return dnswire_error;
@@ -446,7 +446,7 @@ enum dnswire_result dnswire_reader_push(struct dnswire_reader* handle, const uin
         return dnswire_again;
 
     case dnswire_reader_done:
-        return dnswire_error;
+        break;
     }
 
     return dnswire_error;
@@ -560,7 +560,7 @@ enum dnswire_result dnswire_reader_read(struct dnswire_reader* handle, int fd)
         case dnswire_again:
             __state(handle, dnswire_reader_writing_accept);
             break;
-        // fallthrough
+            // fallthrough
 
         default:
             return dnswire_error;
@@ -665,7 +665,7 @@ enum dnswire_result dnswire_reader_read(struct dnswire_reader* handle, int fd)
         case dnswire_endofdata:
             __state(handle, dnswire_reader_writing_finish);
             break;
-        // fallthrough
+            // fallthrough
 
         default:
             return dnswire_error;
@@ -693,7 +693,7 @@ enum dnswire_result dnswire_reader_read(struct dnswire_reader* handle, int fd)
     }
 
     case dnswire_reader_done:
-        return dnswire_error;
+        break;
     }
 
     return dnswire_error;

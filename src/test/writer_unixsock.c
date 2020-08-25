@@ -51,6 +51,16 @@ int main(int argc, const char* argv[])
         return 1;
     }
 
+    // force small buffers to trigger buf resizing
+    writer.read_size = 4;
+    writer.read_inc  = 4;
+    if (dnswire_writer_set_bufsize(&writer, 4) != dnswire_ok) {
+        return 1;
+    }
+    if (dnswire_writer_set_bufinc(&writer, 4) != dnswire_ok) {
+        return 1;
+    }
+
     struct dnstap d = DNSTAP_INITIALIZER;
     create_dnstap(&d, "writer_reader_unixsock-1");
 

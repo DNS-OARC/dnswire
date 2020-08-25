@@ -99,7 +99,7 @@ int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t le
             break;
         default:
             dnstap->message.has_socket_family = false;
-            dnstap->message.socket_family     = (enum _Dnstap__SocketFamily)DNSTAP_MESSAGE_TYPE_UNKNOWN;
+            dnstap->message.socket_family     = (enum _Dnstap__SocketFamily)DNSTAP_SOCKET_FAMILY_UNKNOWN;
         }
 
         switch (dnstap->message.socket_protocol) {
@@ -108,7 +108,7 @@ int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t le
             break;
         default:
             dnstap->message.has_socket_protocol = false;
-            dnstap->message.socket_protocol     = (enum _Dnstap__SocketProtocol)DNSTAP_MESSAGE_TYPE_UNKNOWN;
+            dnstap->message.socket_protocol     = (enum _Dnstap__SocketProtocol)DNSTAP_SOCKET_PROTOCOL_UNKNOWN;
         }
     }
 

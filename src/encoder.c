@@ -123,7 +123,6 @@ enum dnswire_result dnswire_encoder_encode(struct dnswire_encoder* handle, uint8
 
         switch (tinyframe_write_frame(&handle->writer, out, len, frame, sizeof(frame))) {
         case tinyframe_ok:
-            __state(handle, dnswire_encoder_frames);
             return dnswire_ok;
 
         case tinyframe_need_more:
@@ -150,7 +149,7 @@ enum dnswire_result dnswire_encoder_encode(struct dnswire_encoder* handle, uint8
         return dnswire_error;
 
     case dnswire_encoder_done:
-        return dnswire_error;
+        break;
     }
 
     return dnswire_error;
