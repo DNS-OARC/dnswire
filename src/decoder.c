@@ -196,7 +196,7 @@ enum dnswire_result dnswire_decoder_decode(struct dnswire_decoder* handle, const
         }
 
     case dnswire_decoder_done:
-        return dnswire_error;
+        break;
     }
 
     return dnswire_error;

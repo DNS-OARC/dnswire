@@ -56,7 +56,7 @@ enum dnstap_message_type {
 extern const char* const DNSTAP_MESSAGE_TYPE_STRING[];
 
 enum dnstap_socket_family {
-    DNSTAP_SOCKET_FAMILT_UNKNOWN = 0,
+    DNSTAP_SOCKET_FAMILY_UNKNOWN = 0,
     DNSTAP_SOCKET_FAMILY_INET    = 1,
     DNSTAP_SOCKET_FAMILY_INET6   = 2,
 };

@@ -122,7 +122,7 @@ enum dnswire_result dnswire_writer_set_bufsize(struct dnswire_writer* handle, si
         return dnswire_error;
     }
 
-    if (handle->at > size) {
+    if (handle->at + handle->left > size) {
         // move what's left to the start
         if (handle->left) {
             memmove(handle->buf, &handle->buf[handle->at], handle->left);
@@ -258,7 +258,7 @@ enum dnswire_result dnswire_writer_pop(struct dnswire_writer* handle, uint8_t* d
             handle->left += *in_len;
         }
         __state(handle, dnswire_writer_decoding_accept);
-    // fallthrough
+        // fallthrough
 
     case dnswire_writer_decoding_accept:
         switch (dnswire_decoder_decode(&handle->decoder, &handle->read_buf[handle->read_at], handle->read_left)) {
@@ -351,7 +351,7 @@ enum dnswire_result dnswire_writer_pop(struct dnswire_writer* handle, uint8_t* d
             handle->at = 0;
         }
         __state(handle, dnswire_writer_encoding_stop);
-    // fallthrough
+        // fallthrough
 
     case dnswire_writer_encoding_stop:
         res = _encoding(handle);
@@ -392,7 +392,7 @@ enum dnswire_result dnswire_writer_pop(struct dnswire_writer* handle, uint8_t* d
             handle->left += *in_len;
         }
         __state(handle, dnswire_writer_decoding_finish);
-    // fallthrough
+        // fallthrough
 
     case dnswire_writer_decoding_finish:
         switch (dnswire_decoder_decode(&handle->decoder, &handle->read_buf[handle->read_at], handle->read_left)) {
@@ -600,7 +600,7 @@ enum dnswire_result dnswire_writer_write(struct dnswire_writer* handle, int fd)
             handle->at = 0;
         }
         __state(handle, dnswire_writer_encoding_stop);
-    // fallthrough
+        // fallthrough
 
     case dnswire_writer_encoding_stop:
         res = _encoding(handle);
