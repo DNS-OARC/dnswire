@@ -1,9 +1,9 @@
 AC_PREREQ(2.61)
-AC_INIT([dnswire], [0.1.1], [admin@dns-oarc.net], [dnswire], [https://github.com/DNS-OARC/dnswire/issues])
+AC_INIT([dnswire], [0.2.0], [admin@dns-oarc.net], [dnswire], [https://github.com/DNS-OARC/dnswire/issues])
 AC_SUBST([DNSWIRE_VERSION_MAJOR], [0000])
 AC_SUBST([DNSWIRE_VERSION_MINOR], [0001])
 AC_SUBST([DNSWIRE_VERSION_PATCH], [0000])
-AC_SUBST([DNSWIRE_LIBRARY_VERSION], [0:0:0])
+AC_SUBST([DNSWIRE_LIBRARY_VERSION], [0:1:0])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/dnstap.c])
 AC_CONFIG_HEADER([src/config.h])
@@ -32,7 +32,7 @@ AC_ARG_WITH([extra-cflags], [AS_HELP_STRING([--with-extra-cflags=CFLAGS], [Add e
 ])
 
 # Check --with-extra-ldflags
-AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=CFLAGS], [Add extra LDFLAGS])], [
+AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=LDFLAGS], [Add extra LDFLAGS])], [
   AC_MSG_NOTICE([appending extra LDFLAGS... $withval])
   AS_VAR_APPEND(LDFLAGS, [" $withval"])
 ])
@@ -61,6 +61,15 @@ case "${enableval}" in
   *) AC_MSG_ERROR([bad value ${enableval} for --enable-examples]) ;;
 esac], [build_examples=true])
 AM_CONDITIONAL([BUILD_EXAMPLES], [test x$build_examples = xtrue])
+
+# Check --enable-gcov
+AC_ARG_ENABLE([gcov], [AS_HELP_STRING([--enable-gcov], [Enable coverage testing])], [
+  coverage_cflags="--coverage -g -O0 -fno-inline -fno-inline-small-functions -fno-default-inline"
+  AC_MSG_NOTICE([enabling coverage testing... $coverage_cflags])
+  AS_VAR_APPEND(CFLAGS, [" $coverage_cflags"])
+])
+AM_CONDITIONAL([ENABLE_GCOV], [test "x$enable_gcov" != "xno"])
+AM_EXTRA_RECURSIVE_TARGETS([gcov])
 
 # pkg-config
 PKG_INSTALLDIR

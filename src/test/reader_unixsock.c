@@ -44,6 +44,16 @@ int main(int argc, const char* argv[])
         }
         dnswire_reader_allow_bidirectional(&reader, true);
 
+        // force small buffers to trigger buf resizing
+        reader.write_size = 4;
+        reader.write_inc  = 4;
+        if (dnswire_reader_set_bufsize(&reader, 4) != dnswire_ok) {
+            return 1;
+        }
+        if (dnswire_reader_set_bufinc(&reader, 4) != dnswire_ok) {
+            return 1;
+        }
+
         int done = 0;
 
         while (!done) {

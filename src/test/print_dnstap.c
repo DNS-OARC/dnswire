@@ -10,7 +10,7 @@
 
 static const char* printable_string(const uint8_t* data, size_t len)
 {
-    static char buf[512];
+    static char buf[512], hex;
     size_t      r = 0, w = 0;
 
     while (r < len && w < sizeof(buf) - 1) {
@@ -21,8 +21,20 @@ static const char* printable_string(const uint8_t* data, size_t len)
                 break;
             }
 
-            sprintf(&buf[w], "\\x%02x", data[r++]);
-            w += 4;
+            buf[w++] = '\\';
+            buf[w++] = 'x';
+            hex      = (data[r] & 0xf0) >> 4;
+            if (hex > 9) {
+                buf[w++] = 'a' + (hex - 10);
+            } else {
+                buf[w++] = '0' + hex;
+            }
+            hex = data[r++] & 0xf;
+            if (hex > 9) {
+                buf[w++] = 'a' + (hex - 10);
+            } else {
+                buf[w++] = '0' + hex;
+            }
         }
     }
     if (w >= sizeof(buf)) {
@@ -92,11 +104,11 @@ static void print_dnstap(const struct dnstap* d)
             printf("  query_zone: %s\n", printable_string(dnstap_message_query_zone(*d), dnstap_message_query_zone_length(*d)));
         }
         if (dnstap_message_has_query_message(*d)) {
-            printf("  query_message_length: %lu\n", dnstap_message_query_message_length(*d));
+            printf("  query_message_length: %zu\n", dnstap_message_query_message_length(*d));
             printf("  query_message: %s\n", printable_string(dnstap_message_query_message(*d), dnstap_message_query_message_length(*d)));
         }
         if (dnstap_message_has_response_message(*d)) {
-            printf("  response_message_length: %lu\n", dnstap_message_response_message_length(*d));
+            printf("  response_message_length: %zu\n", dnstap_message_response_message_length(*d));
             printf("  response_message: %s\n", printable_string(dnstap_message_response_message(*d), dnstap_message_response_message_length(*d)));
         }
     }

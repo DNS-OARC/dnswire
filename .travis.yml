@@ -1,24 +1,20 @@
 dist: xenial
 addons:
   apt:
+    sources:
+    - sourceline: 'ppa:dns-oarc/dsc-pr'
     update: true
     packages:
     - protobuf-c-compiler
     - libprotobuf-c-dev
     - libuv1-dev
+    - libtinyframe-dev
 language: c
 compiler:
   - clang
   - gcc
 install: ./autogen.sh
 script:
-  - git clone https://github.com/DNS-OARC/tinyframe.git
-  - cd tinyframe
-  - ./autogen.sh
-  - ./configure --prefix=$PWD/root
-  - make all install
-  - cd ..
-  - export PKG_CONFIG_PATH=$PWD/tinyframe/root/lib/pkgconfig
   - ./configure --enable-warn-all
   - make dist
   - tar zxvf *.tar.gz
@@ -28,3 +24,4 @@ script:
   - ../configure --enable-warn-all
   - make
   - make test
+  - cat src/test/test*.sh.log
