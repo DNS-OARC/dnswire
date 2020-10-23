@@ -1,7 +1,7 @@
 %define sover   0
 %define libname libdnswire%{sover}
 Name:           dnswire
-Version:        0.1.1
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        library for DNS encapsulations and transporting of them
 Group:          Development/Libraries/C and C++
@@ -97,9 +97,29 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Oct 23 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.2.0-1
+- Release 0.2.0
+  * This release fixes various issues and bugs in the API, fix typos and
+    adds coverage tests.
+  * Fixes:
+    - `dnstap_decode_protobuf()`: Fix setting of unknown socket family and protocol, was setting DNSTAP_MESSAGE_TYPE_ enums.
+    - `enum dnstap_message_type`: Fix typo in unknown enum, now correct `DNSTAP_SOCKET_FAMILY_UNKNOWN`
+    - `dnswire_encoder_encode()`: Remove setting state when to the same state it was
+    - `dnswire_writer_set_bufsize()`: Fix bug with changing buffer size while having something in the buffer
+  * Commits:
+    3bfd7e2 Travis, configure
+    27f69ab Coverage
+    d04b810 Coverage
+    ee153d7 Badges
+    a381843 Travis
+    f3a3e43 COPR
+    4b6640f Compile warnings
+    bc1b2e2 Funding
+    ae537a9 Examples, tests
+    c139dd7 LGTM
 * Fri Mar 20 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.1.1-1
 - Release v0.1.1
-  - Fix RPM devel package dependencies
+  * Fix RPM devel package dependencies
   * Commits:
     b451169 package
 * Thu Mar 19 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.1.0-1
