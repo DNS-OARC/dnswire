@@ -12,6 +12,7 @@
 static char          dns_wire_format_placeholder[] = "dns_wire_format_placeholder";
 static unsigned char query_address[sizeof(struct in_addr)];
 static unsigned char response_address[sizeof(struct in_addr)];
+static char          policy_value[] = "bad.ns.name";
 
 static inline void create_dnstap(struct dnstap* d, const char* identity)
 {
@@ -48,4 +49,10 @@ static inline void create_dnstap(struct dnstap* d, const char* identity)
 
     dnstap_message_set_query_message(*d, dns_wire_format_placeholder, sizeof(dns_wire_format_placeholder) - 1);
     dnstap_message_set_response_message(*d, dns_wire_format_placeholder, sizeof(dns_wire_format_placeholder) - 1);
+
+    dnstap_message_use_policy(*d);
+    dnstap_message_policy_set_type(*d, "RPZ");
+    dnstap_message_policy_set_action(*d, DNSTAP_POLICY_ACTION_DROP);
+    dnstap_message_policy_set_match(*d, DNSTAP_POLICY_MATCH_NS_NAME);
+    dnstap_message_policy_set_value(*d, policy_value, sizeof(policy_value) - 1);
 }

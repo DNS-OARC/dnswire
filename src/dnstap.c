@@ -41,6 +41,8 @@ const char* const DNSTAP_MESSAGE_TYPE_STRING[] = {
     "STUB_RESPONSE",
     "TOOL_QUERY",
     "TOOL_RESPONSE",
+    "UPDATE_QUERY",
+    "UPDATE_RESPONSE",
 };
 const char* const DNSTAP_SOCKET_FAMILY_STRING[] = {
     "UNKNOWN",
@@ -51,7 +53,37 @@ const char* const DNSTAP_SOCKET_PROTOCOL_STRING[] = {
     "UNKNOWN",
     "UDP",
     "TCP",
+    "DOT",
+    "DOH",
+    "DNSCryptUDP",
+    "DNSCryptTCP",
 };
+const char* const DNSTAP_POLICY_ACTION_STRING[] = {
+    "UNKNOWN",
+    "NXDOMAIN",
+    "NODATA",
+    "PASS",
+    "DROP",
+    "TRUNCATE",
+    "LOCAL_DATA",
+};
+const char* const DNSTAP_POLICY_MATCH_STRING[] = {
+    "UNKNOWN",
+    "QNAME",
+    "CLIENT_IP",
+    "RESPONSE_IP",
+    "NS_NAME",
+    "NS_IP",
+};
+
+void dnstap_message_clear_policy(struct dnstap* dnstap)
+{
+    static const Dnstap__Policy policy = DNSTAP__POLICY__INIT;
+    assert(dnstap);
+
+    dnstap->message.policy = 0;
+    dnstap->policy         = policy;
+}
 
 int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t len)
 {
@@ -88,6 +120,8 @@ int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t le
         case DNSTAP_MESSAGE_TYPE_STUB_RESPONSE:
         case DNSTAP_MESSAGE_TYPE_TOOL_QUERY:
         case DNSTAP_MESSAGE_TYPE_TOOL_RESPONSE:
+        case DNSTAP_MESSAGE_TYPE_UPDATE_QUERY:
+        case DNSTAP_MESSAGE_TYPE_UPDATE_RESPONSE:
             break;
         default:
             dnstap->message.type = (enum _Dnstap__Message__Type)DNSTAP_MESSAGE_TYPE_UNKNOWN;
@@ -105,10 +139,43 @@ int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t le
         switch (dnstap->message.socket_protocol) {
         case DNSTAP_SOCKET_PROTOCOL_UDP:
         case DNSTAP_SOCKET_PROTOCOL_TCP:
+        case DNSTAP_SOCKET_PROTOCOL_DOT:
+        case DNSTAP_SOCKET_PROTOCOL_DOH:
+        case DNSTAP_SOCKET_PROTOCOL_DNSCryptUDP:
+        case DNSTAP_SOCKET_PROTOCOL_DNSCryptTCP:
             break;
         default:
             dnstap->message.has_socket_protocol = false;
             dnstap->message.socket_protocol     = (enum _Dnstap__SocketProtocol)DNSTAP_SOCKET_PROTOCOL_UNKNOWN;
+        }
+
+        if (dnstap->message.policy) {
+            dnstap->policy = *dnstap->message.policy;
+
+            switch (dnstap->policy.action) {
+            case DNSTAP_POLICY_ACTION_NXDOMAIN:
+            case DNSTAP_POLICY_ACTION_NODATA:
+            case DNSTAP_POLICY_ACTION_PASS:
+            case DNSTAP_POLICY_ACTION_DROP:
+            case DNSTAP_POLICY_ACTION_TRUNCATE:
+            case DNSTAP_POLICY_ACTION_LOCAL_DATA:
+                break;
+            default:
+                dnstap->policy.has_action = false;
+                dnstap->policy.action     = (enum _Dnstap__Policy__Action)DNSTAP_POLICY_ACTION_UNKNOWN;
+            }
+
+            switch (dnstap->policy.match) {
+            case DNSTAP_POLICY_MATCH_QNAME:
+            case DNSTAP_POLICY_MATCH_CLIENT_IP:
+            case DNSTAP_POLICY_MATCH_RESPONSE_IP:
+            case DNSTAP_POLICY_MATCH_NS_NAME:
+            case DNSTAP_POLICY_MATCH_NS_IP:
+                break;
+            default:
+                dnstap->policy.has_match = false;
+                dnstap->policy.match     = (enum _Dnstap__Policy__Match)DNSTAP_POLICY_MATCH_UNKNOWN;
+            }
         }
     }
 

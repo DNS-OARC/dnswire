@@ -52,6 +52,8 @@ enum dnstap_message_type {
     DNSTAP_MESSAGE_TYPE_STUB_RESPONSE      = 10,
     DNSTAP_MESSAGE_TYPE_TOOL_QUERY         = 11,
     DNSTAP_MESSAGE_TYPE_TOOL_RESPONSE      = 12,
+    DNSTAP_MESSAGE_TYPE_UPDATE_QUERY       = 13,
+    DNSTAP_MESSAGE_TYPE_UPDATE_RESPONSE    = 14,
 };
 extern const char* const DNSTAP_MESSAGE_TYPE_STRING[];
 
@@ -63,15 +65,42 @@ enum dnstap_socket_family {
 extern const char* const DNSTAP_SOCKET_FAMILY_STRING[];
 
 enum dnstap_socket_protocol {
-    DNSTAP_SOCKET_PROTOCOL_UNKNOWN = 0,
-    DNSTAP_SOCKET_PROTOCOL_UDP     = 1,
-    DNSTAP_SOCKET_PROTOCOL_TCP     = 2,
+    DNSTAP_SOCKET_PROTOCOL_UNKNOWN     = 0,
+    DNSTAP_SOCKET_PROTOCOL_UDP         = 1,
+    DNSTAP_SOCKET_PROTOCOL_TCP         = 2,
+    DNSTAP_SOCKET_PROTOCOL_DOT         = 3,
+    DNSTAP_SOCKET_PROTOCOL_DOH         = 4,
+    DNSTAP_SOCKET_PROTOCOL_DNSCryptUDP = 5,
+    DNSTAP_SOCKET_PROTOCOL_DNSCryptTCP = 6,
 };
 extern const char* const DNSTAP_SOCKET_PROTOCOL_STRING[];
+
+enum dnstap_policy_action {
+    DNSTAP_POLICY_ACTION_UNKNOWN    = 0,
+    DNSTAP_POLICY_ACTION_NXDOMAIN   = 1,
+    DNSTAP_POLICY_ACTION_NODATA     = 2,
+    DNSTAP_POLICY_ACTION_PASS       = 3,
+    DNSTAP_POLICY_ACTION_DROP       = 4,
+    DNSTAP_POLICY_ACTION_TRUNCATE   = 5,
+    DNSTAP_POLICY_ACTION_LOCAL_DATA = 6,
+};
+extern const char* const DNSTAP_POLICY_ACTION_STRING[];
+
+enum dnstap_policy_match {
+    DNSTAP_POLICY_MATCH_UNKNOWN     = 0,
+    DNSTAP_POLICY_MATCH_QNAME       = 1,
+    DNSTAP_POLICY_MATCH_CLIENT_IP   = 2,
+    DNSTAP_POLICY_MATCH_RESPONSE_IP = 3,
+    DNSTAP_POLICY_MATCH_NS_NAME     = 4,
+    DNSTAP_POLICY_MATCH_NS_IP       = 5,
+};
+extern const char* const DNSTAP_POLICY_MATCH_STRING[];
 
 struct dnstap {
     Dnstap__Dnstap  dnstap;
     Dnstap__Message message;
+    Dnstap__Policy  policy;
+    bool            _policy_type_alloced;
 
     Dnstap__Dnstap* unpacked_dnstap;
 };
@@ -80,6 +109,7 @@ struct dnstap {
     {                                             \
         .dnstap          = DNSTAP__DNSTAP__INIT,  \
         .message         = DNSTAP__MESSAGE__INIT, \
+        .policy          = DNSTAP__POLICY__INIT,  \
         .unpacked_dnstap = 0,                     \
     }
 
@@ -138,6 +168,39 @@ struct dnstap {
     default:                                                                                         \
         (d).message.has_socket_protocol = false;                                                     \
         (d).message.socket_protocol     = (enum _Dnstap__SocketProtocol)DNSTAP_MESSAGE_TYPE_UNKNOWN; \
+    }
+
+#define dnstap_message_has_policy(d) ((d).dnstap.message->policy != 0)
+#define dnstap_message_use_policy(d) (d).dnstap.message->policy = &(d).policy
+void dnstap_message_clear_policy(struct dnstap*);
+#define dnstap_message_policy_set_action(d, v)                                              \
+    switch (v) {                                                                            \
+    case DNSTAP_POLICY_ACTION_NXDOMAIN:                                                     \
+    case DNSTAP_POLICY_ACTION_NODATA:                                                       \
+    case DNSTAP_POLICY_ACTION_PASS:                                                         \
+    case DNSTAP_POLICY_ACTION_DROP:                                                         \
+    case DNSTAP_POLICY_ACTION_TRUNCATE:                                                     \
+    case DNSTAP_POLICY_ACTION_LOCAL_DATA:                                                   \
+        (d).policy.has_action = true;                                                       \
+        (d).policy.action     = (enum _Dnstap__Policy__Action)v;                            \
+        break;                                                                              \
+    default:                                                                                \
+        (d).policy.has_action = false;                                                      \
+        (d).policy.action     = (enum _Dnstap__Policy__Action)DNSTAP_POLICY_ACTION_UNKNOWN; \
+    }
+#define dnstap_message_policy_set_match(d, v)                                            \
+    switch (v) {                                                                         \
+    case DNSTAP_POLICY_MATCH_QNAME:                                                      \
+    case DNSTAP_POLICY_MATCH_CLIENT_IP:                                                  \
+    case DNSTAP_POLICY_MATCH_RESPONSE_IP:                                                \
+    case DNSTAP_POLICY_MATCH_NS_NAME:                                                    \
+    case DNSTAP_POLICY_MATCH_NS_IP:                                                      \
+        (d).policy.has_match = true;                                                     \
+        (d).policy.match     = (enum _Dnstap__Policy__Match)v;                           \
+        break;                                                                           \
+    default:                                                                             \
+        (d).policy.has_match = false;                                                    \
+        (d).policy.match     = (enum _Dnstap__Policy__Match)DNSTAP_POLICY_MATCH_UNKNOWN; \
     }
 
 int dnstap_decode_protobuf(struct dnstap*, const uint8_t*, size_t);
