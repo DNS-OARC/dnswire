@@ -1,5 +1,5 @@
-dnstap dnstap identity string
-dnstap dnstap version string
+dnstap dnstap identity bytestring
+dnstap dnstap version bytestring
 dnstap dnstap extra bytes
 dnstap_message message socket_family enum dnstap_socket_family
 dnstap_message message socket_protocol enum dnstap_socket_protocol
@@ -14,3 +14,8 @@ dnstap_message message query_zone bytes
 dnstap_message message response_time_sec value uint64_t
 dnstap_message message response_time_nsec value uint32_t
 dnstap_message message response_message bytes
+dnstap_message_policy policy type string
+dnstap_message_policy policy rule bytes
+dnstap_message_policy policy action enum dnstap_policy_action
+dnstap_message_policy policy match enum dnstap_policy_match
+dnstap_message_policy policy value bytes

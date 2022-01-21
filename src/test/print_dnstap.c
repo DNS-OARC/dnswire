@@ -111,6 +111,26 @@ static void print_dnstap(const struct dnstap* d)
             printf("  response_message_length: %zu\n", dnstap_message_response_message_length(*d));
             printf("  response_message: %s\n", printable_string(dnstap_message_response_message(*d), dnstap_message_response_message_length(*d)));
         }
+
+        if (dnstap_message_has_policy(*d)) {
+            printf("  policy:\n");
+
+            if (dnstap_message_policy_has_type(*d)) {
+                printf("    type: %s\n", dnstap_message_policy_type(*d));
+            }
+            if (dnstap_message_policy_has_rule(*d)) {
+                printf("    rule: %s\n", printable_string(dnstap_message_policy_rule(*d), dnstap_message_policy_rule_length(*d)));
+            }
+            if (dnstap_message_policy_has_action(*d)) {
+                printf("    action: %s\n", DNSTAP_POLICY_ACTION_STRING[dnstap_message_policy_action(*d)]);
+            }
+            if (dnstap_message_policy_has_match(*d)) {
+                printf("    match: %s\n", DNSTAP_POLICY_MATCH_STRING[dnstap_message_policy_match(*d)]);
+            }
+            if (dnstap_message_policy_has_value(*d)) {
+                printf("    value: %s\n", printable_string(dnstap_message_policy_value(*d), dnstap_message_policy_value_length(*d)));
+            }
+        }
     }
 
     printf("----\n");
