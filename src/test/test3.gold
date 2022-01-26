@@ -1,4 +1,4 @@
-read 322
+read 370
 ---- dnstap
 identity: writer_write-1
 message:
@@ -13,6 +13,11 @@ message:
   query_message: dns_wire_format_placeholder
   response_message_length: 27
   response_message: dns_wire_format_placeholder
+  policy:
+    type: RPZ
+    action: DROP
+    match: NS_NAME
+    value: bad.ns.name
 ----
 ---- dnstap
 identity: writer_write-2
@@ -28,4 +33,9 @@ message:
   query_message: dns_wire_format_placeholder
   response_message_length: 27
   response_message: dns_wire_format_placeholder
+  policy:
+    type: RPZ
+    action: DROP
+    match: NS_NAME
+    value: bad.ns.name
 ----
