@@ -1,7 +1,7 @@
-%define sover   0
+%define sover   1
 %define libname libdnswire%{sover}
 Name:           dnswire
-Version:        0.2.0
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        library for DNS encapsulations and transporting of them
 Group:          Development/Libraries/C and C++
@@ -97,6 +97,17 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan 26 2022 Jerry Lundström <lundstrom.jerry@gmail.com> 0.3.0-1
+- Release 0.3.0
+  * This release updates the Protobuf definition for DNSTAP to include
+    new message types, new protocols and the new Policy object.
+  * Changes:
+    - Update debhelper compatibility level to 10
+    - Update to latest `dnstap.pb`, new message types, protocols and message policy
+  * Commits:
+    87e7909 New dnstap.pb
+    f215476 debhelper
+    20bf38f Bye Travis
 * Fri Oct 23 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.2.0-1
 - Release 0.2.0
   * This release fixes various issues and bugs in the API, fix typos and
