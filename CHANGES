@@ -1,3 +1,12 @@
+2022-02-01 Jerry Lundström
+
+    Release 0.3.1
+
+    This is a package only update release to correct mistakes in Debian/
+    Ubuntu packages.
+
+    - Bump SO version for Debian/Ubuntu
+
 2022-01-26 Jerry Lundström
 
     Release 0.3.0

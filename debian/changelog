@@ -1,3 +1,14 @@
+dnswire (0.3.1-1~unstable+1) unstable; urgency=low
+
+  * Release 0.3.1
+
+    This is a package only update release to correct mistakes in Debian/
+    Ubuntu packages.
+
+    - Bump SO version for Debian/Ubuntu
+
+ -- Jerry Lundström <lundstrom.jerry@gmail.com>  Tue, 01 Feb 2022 16:41:43 +0100
+
 dnswire (0.3.0-1~unstable+1) unstable; urgency=low
 
   * Release 0.3.0

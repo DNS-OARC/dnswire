@@ -1,7 +1,7 @@
 %define sover   1
 %define libname libdnswire%{sover}
 Name:           dnswire
-Version:        0.3.0
+Version:        0.3.1
 Release:        1%{?dist}
 Summary:        library for DNS encapsulations and transporting of them
 Group:          Development/Libraries/C and C++
@@ -97,6 +97,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 01 2022 Jerry Lundström <lundstrom.jerry@gmail.com> 0.3.1-1
+- Release 0.3.1
+  * This is a package only update release to correct mistakes in Debian/
+    Ubuntu packages.
+  * Bump SO version for Debian/Ubuntu
 * Wed Jan 26 2022 Jerry Lundström <lundstrom.jerry@gmail.com> 0.3.0-1
 - Release 0.3.0
   * This release updates the Protobuf definition for DNSTAP to include
