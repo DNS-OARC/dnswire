@@ -10,7 +10,7 @@ Homepage: https://github.com/DNS-OARC/dnswire
 Vcs-Git: https://github.com/DNS-OARC/dnswire.git
 Vcs-Browser: https://github.com/DNS-OARC/dnswire
 
-Package: libdnswire0
+Package: libdnswire1
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: library for DNS encapsulations and transporting of them
@@ -19,7 +19,7 @@ Description: library for DNS encapsulations and transporting of them
 
 Package: libdnswire-dev
 Architecture: any
-Depends: libdnswire0, libtinyframe-dev, libprotobuf-c-dev, ${misc:Depends}
+Depends: libdnswire1, libtinyframe-dev, libprotobuf-c-dev, ${misc:Depends}
 Description: library for DNS encapsulations and transporting of them - development files
  A C library for encoding/decoding different DNS encapsulations and
  transporting them over different protocols.
