@@ -1,3 +1,17 @@
+dnswire (0.3.2-1~unstable+1) unstable; urgency=low
+
+  * Release 0.3.2
+
+    This is a package only update release to correct mistakes in Debian/
+    Ubuntu packages.
+
+    - Fix Debian/Ubuntu package replaces/breaks to solve filename conflicts
+
+    dea8e35 Deb packages
+    8398f65 Deb packages
+
+ -- Jerry Lundström <lundstrom.jerry@gmail.com>  Wed, 02 Feb 2022 09:39:27 +0100
+
 dnswire (0.3.1-1~unstable+1) unstable; urgency=low
 
   * Release 0.3.1

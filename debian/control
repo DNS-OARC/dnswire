@@ -13,6 +13,8 @@ Vcs-Browser: https://github.com/DNS-OARC/dnswire
 Package: libdnswire1
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: libdnswire0 (>= 0.3.0)
+Breaks: libdnswire0 (>= 0.3.0)
 Description: library for DNS encapsulations and transporting of them
  A C library for encoding/decoding different DNS encapsulations and
  transporting them over different protocols.
