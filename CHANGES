@@ -1,3 +1,15 @@
+2022-02-02 Jerry Lundström
+
+    Release 0.3.2
+
+    This is a package only update release to correct mistakes in Debian/
+    Ubuntu packages.
+
+    - Fix Debian/Ubuntu package replaces/breaks to solve filename conflicts
+
+    dea8e35 Deb packages
+    8398f65 Deb packages
+
 2022-02-01 Jerry Lundström
 
     Release 0.3.1
