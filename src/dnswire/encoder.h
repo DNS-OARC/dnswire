@@ -1,6 +1,6 @@
 /*
  * Author Jerry Lundström <jerry@dns-oarc.net>
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2023, OARC, Inc.
  * All rights reserved.
  *
  * This file is part of the dnswire library.

@@ -1,7 +1,7 @@
 %define sover   1
 %define libname libdnswire%{sover}
 Name:           dnswire
-Version:        0.3.3
+Version:        0.4.0
 Release:        1%{?dist}
 Summary:        library for DNS encapsulations and transporting of them
 Group:          Development/Libraries/C and C++
@@ -97,6 +97,13 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Mar 03 2023 Jerry Lundström <lundstrom.jerry@gmail.com> 0.4.0-1
+- Release 0.4.0
+  * Updated `dnstap.pb` to include recently added DNS-over-QUIC (DOQ)
+    socket protocol.
+  * Commits:
+    a03a989 Fix COPR
+    e3f1167 dnstap.pb, DOQ
 * Wed Feb 02 2022 Jerry Lundström <lundstrom.jerry@gmail.com> 0.3.3-1
 - Release 0.3.3
   * This is a package only update release to correct mistakes in Debian/
