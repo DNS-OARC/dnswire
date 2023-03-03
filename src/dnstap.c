@@ -57,6 +57,7 @@ const char* const DNSTAP_SOCKET_PROTOCOL_STRING[] = {
     "DOH",
     "DNSCryptUDP",
     "DNSCryptTCP",
+    "DOQ",
 };
 const char* const DNSTAP_POLICY_ACTION_STRING[] = {
     "UNKNOWN",
@@ -143,6 +144,7 @@ int dnstap_decode_protobuf(struct dnstap* dnstap, const uint8_t* data, size_t le
         case DNSTAP_SOCKET_PROTOCOL_DOH:
         case DNSTAP_SOCKET_PROTOCOL_DNSCryptUDP:
         case DNSTAP_SOCKET_PROTOCOL_DNSCryptTCP:
+        case DNSTAP_SOCKET_PROTOCOL_DOQ:
             break;
         default:
             dnstap->message.has_socket_protocol = false;
