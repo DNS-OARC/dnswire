@@ -1,3 +1,15 @@
+dnswire (0.4.0-1~unstable+1) unstable; urgency=low
+
+  * Release 0.4.0
+
+    Updated `dnstap.pb` to include recently added DNS-over-QUIC (DOQ)
+    socket protocol.
+
+    a03a989 Fix COPR
+    e3f1167 dnstap.pb, DOQ
+
+ -- Jerry Lundström <lundstrom.jerry@gmail.com>  Fri, 03 Mar 2023 13:39:49 +0100
+
 dnswire (0.3.3-1~unstable+1) unstable; urgency=low
 
   * Release 0.3.3
