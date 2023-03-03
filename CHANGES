@@ -1,3 +1,13 @@
+2023-03-03 Jerry Lundström
+
+    Release 0.4.0
+
+    Updated `dnstap.pb` to include recently added DNS-over-QUIC (DOQ)
+    socket protocol.
+
+    a03a989 Fix COPR
+    e3f1167 dnstap.pb, DOQ
+
 2022-02-02 Jerry Lundström
 
     Release 0.3.3

@@ -3,11 +3,11 @@ Upstream-Name: dnswire
 Source: https://github.com/DNS-OARC/dnswire
 
 Files: *
-Copyright: 2020 OARC, Inc.
+Copyright: 2019-2023 OARC, Inc.
 License: LGPL-3.0-or-later
 
 Files: debian/*
-Copyright: 2020 Jerry Lundström <lundstrom.jerry@gmail.com>
+Copyright: 2023 Jerry Lundström <lundstrom.jerry@gmail.com>
 License: BSD-3-Clause
 
 License: LGPL-3.0-or-later

@@ -47,7 +47,7 @@ int main(void)
     d.message.socket_family = (enum _Dnstap__SocketFamily)DNSTAP_SOCKET_FAMILY_INET;
 
     // invalid message.socket_protocol
-    d.message.socket_protocol = (enum _Dnstap__SocketProtocol)(DNSTAP_SOCKET_PROTOCOL_DNSCryptTCP + 1);
+    d.message.socket_protocol = (enum _Dnstap__SocketProtocol)(DNSTAP_SOCKET_PROTOCOL_DOQ + 1);
     s                         = dnstap_encode_protobuf_size(&d);
     assert(s < sizeof(buf));
     assert(dnstap_encode_protobuf(&d, buf) == s);

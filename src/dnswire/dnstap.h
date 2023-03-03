@@ -1,6 +1,6 @@
 /*
  * Author Jerry Lundström <jerry@dns-oarc.net>
- * Copyright (c) 2019, OARC, Inc.
+ * Copyright (c) 2019-2023, OARC, Inc.
  * All rights reserved.
  *
  * This file is part of the dnswire library.
@@ -72,6 +72,7 @@ enum dnstap_socket_protocol {
     DNSTAP_SOCKET_PROTOCOL_DOH         = 4,
     DNSTAP_SOCKET_PROTOCOL_DNSCryptUDP = 5,
     DNSTAP_SOCKET_PROTOCOL_DNSCryptTCP = 6,
+    DNSTAP_SOCKET_PROTOCOL_DOQ         = 7,
 };
 extern const char* const DNSTAP_SOCKET_PROTOCOL_STRING[];
 
