@@ -18,7 +18,9 @@ BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  tinyframe-devel
 %if 0%{?suse_version} || 0%{?sle_version}
+%if 0%{?is_opensuse} || 0%{?sle_version} == 150200
 BuildRequires:  protobuf-c
+%endif
 BuildRequires:  libprotobuf-c-devel
 %else
 BuildRequires:  protobuf-c-compiler
