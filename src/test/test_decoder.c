@@ -6,7 +6,7 @@
 
 int main(void)
 {
-    uint8_t                buf[1];
+    uint8_t                buf[1] = {};
     struct dnswire_decoder d = DNSWIRE_DECODER_INITIALIZER;
 
     // decoder * need more
