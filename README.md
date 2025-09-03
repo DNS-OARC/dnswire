@@ -11,4 +11,4 @@ Supported encapsulations:
 - [DNSTAP](http://dnstap.info) using Protobuf
 
 Currently supports:
-- Frame Streams using [tinyframe](https://github.com/DNS-OARC/tinyframe)
+- Frame Streams using [tinyframe](https://codeberg.org/DNS-OARC/tinyframe)

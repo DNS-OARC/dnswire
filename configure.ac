@@ -1,5 +1,5 @@
 AC_PREREQ(2.61)
-AC_INIT([dnswire], [0.4.0], [admin@dns-oarc.net], [dnswire], [https://github.com/DNS-OARC/dnswire/issues])
+AC_INIT([dnswire], [0.4.0], [admin@dns-oarc.net], [dnswire], [https://codeberg.org/DNS-OARC/dnswire/issues])
 AC_SUBST([DNSWIRE_VERSION_MAJOR], [0000])
 AC_SUBST([DNSWIRE_VERSION_MINOR], [0004])
 AC_SUBST([DNSWIRE_VERSION_PATCH], [0000])

@@ -6,9 +6,9 @@ Build-Depends: debhelper (>= 10), build-essential, automake, autoconf,
  libtool, pkg-config, libtinyframe-dev, protobuf-c-compiler,
  libprotobuf-c-dev
 Standards-Version: 3.9.4
-Homepage: https://github.com/DNS-OARC/dnswire
-Vcs-Git: https://github.com/DNS-OARC/dnswire.git
-Vcs-Browser: https://github.com/DNS-OARC/dnswire
+Homepage: https://codeberg.org/DNS-OARC/dnswire
+Vcs-Git: https://codeberg.org/DNS-OARC/dnswire.git
+Vcs-Browser: https://codeberg.org/DNS-OARC/dnswire
 
 Package: libdnswire1
 Architecture: any
