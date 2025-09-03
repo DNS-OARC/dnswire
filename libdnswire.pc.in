@@ -6,7 +6,7 @@ includedir=@includedir@
 Name: libdnswire
 Description: dnswire library
 Version: @VERSION@
-URL: https://github.com/DNS-OARC/dnswire
+URL: https://codeberg.org/DNS-OARC/dnswire
 Requires: libtinyframe >= 0.1.0
 Libs: -L${libdir} -ldnswire
 Libs.private:
